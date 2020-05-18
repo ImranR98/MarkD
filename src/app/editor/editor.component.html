@@ -13,7 +13,7 @@
         <div fxLayout="column" class="stdMargin">
             <mat-form-field>
                 <textarea matInput placeholder="Note" [(ngModel)]="data" cdkTextareaAutosize
-                    cdkAutosizeMinRows="10"></textarea>
+                    cdkAutosizeMinRows="10" (ngModelChange)="changed()"></textarea>
             </mat-form-field>
         </div>
     </mat-tab>

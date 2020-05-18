@@ -1,20 +1,21 @@
-<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="1em">
+<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="1em" *ngIf="displayedNotes.length > 0">
     <mat-form-field>
         <input matInput placeholder="Search" (change)="refreshDisplayedNotes()" [(ngModel)]="searchQuery">
     </mat-form-field>
     <mat-form-field>
-        <mat-select (selectionChange)="refreshDisplayedNotes()" placeholder="Sort" name="sort" #sort [(ngModel)]="selectedSort">
+        <mat-select (selectionChange)="refreshDisplayedNotes()" placeholder="Sort" name="sort" #sort
+            [(ngModel)]="selectedSort">
             <mat-option *ngFor="let sortOption of sortOptions; let i = index" [value]="i">
                 {{sortOption}}
             </mat-option>
         </mat-select>
     </mat-form-field>
 </div>
-<div fxLayout="row wrap" fxLayoutGap="1em" *ngIf="displayedNotes; else processing">
+<div fxLayout="row wrap" fxLayoutGap="1em">
     <a mat-button *ngFor="let note of displayedNotes" [routerLink]="['/note', folder.folder, note.fileName]"
         class="stdMarginBottom">{{note.fileName}}</a>
 </div>
 
-<ng-template #processing>
+<ng-template *ngIf="processing">
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </ng-template>

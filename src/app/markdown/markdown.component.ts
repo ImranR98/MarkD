@@ -43,11 +43,9 @@ export class MarkdownComponent {
 
   ngOnChanges(changes: { [propKey: string]: SimpleChange }) {
     for (const propName in changes) {
-      if (propName === 'input') {
+      if (propName === 'data') {
         const value = changes[propName].currentValue
-        if (value) {
-          this.html = this.markdownToSafeHtml(value)
-        }
+        this.html = this.markdownToSafeHtml(value)
       }
     }
   }

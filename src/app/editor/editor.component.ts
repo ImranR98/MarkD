@@ -1,5 +1,6 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit, Output, SimpleChange } from '@angular/core';
 import { NoteInfo } from '../types';
+import { EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-editor',
@@ -8,4 +9,9 @@ import { NoteInfo } from '../types';
 })
 export class EditorComponent {
   @Input() data: string
+  @Output() change: EventEmitter<string> = new EventEmitter<string>()
+
+  changed() {
+    this.change.emit(this.data)
+  }
 }

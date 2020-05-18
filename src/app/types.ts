@@ -1,7 +1,7 @@
 export class NoteInfo {
     fileName: string = ''
-    modified: Date = new Date()
-    created: Date = new Date()
+    modified: Date | string = new Date()
+    created: Date | string = new Date()
 }
 
 export class FolderInfo {

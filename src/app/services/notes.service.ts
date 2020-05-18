@@ -28,7 +28,7 @@ export class NotesService {
   }
 
   deleteNote = async (folder: string, fileName: string) => {
-    return await this.http.post(environment.apiUrl + `/note/delete`, { folder, fileName }, this.httpOptions)
+    return await this.http.post(environment.apiUrl + `/note/delete`, { folder, fileName }, this.httpOptions).toPromise()
   }
 
   createFolder = async (folder: string) => {
