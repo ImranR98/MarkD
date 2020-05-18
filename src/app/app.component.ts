@@ -6,6 +6,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'NotesMD';
+  title = 'MarkD';
   test = '# Hello Markdown\n```csharp\npublic class Foo {}\n```'
 }

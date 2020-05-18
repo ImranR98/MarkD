@@ -21,7 +21,7 @@ else if (!fs.statSync(notesDir).isDirectory()) fs.mkdirSync(notesDir)
 if (!process.env.RSA_PRIVATE_KEY || !process.env.RSA_PUBLIC_KEY || !process.env.EXPIRES_IN) throw 'Environment variables missing.'
 
 app.use(bodyparser.json())
-app.use(express.static(__dirname + '/dist/NotesMD'))
+app.use(express.static(__dirname + '/dist/MarkD'))
 
 // Allow cross origin requests when on localhost (development)
 app.use((req, res, next) => {

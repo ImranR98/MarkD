@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "NotesMD": {
+    "MarkD": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/NotesMD",
+            "outputPath": "dist/MarkD",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -68,18 +68,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "NotesMD:build"
+            "browserTarget": "MarkD:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "NotesMD:build:production"
+              "browserTarget": "MarkD:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "NotesMD:build"
+            "browserTarget": "MarkD:build"
           }
         },
         "test": {
@@ -117,16 +117,16 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "NotesMD:serve"
+            "devServerTarget": "MarkD:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "NotesMD:serve:production"
+              "devServerTarget": "MarkD:serve:production"
             }
           }
         }
       }
     }
   },
-  "defaultProject": "NotesMD"
+  "defaultProject": "MarkD"
 }
