@@ -16,6 +16,8 @@ export class NotesComponent implements OnInit {
   processing: boolean = false
   list$: BehaviorSubject<FolderInfo[]> = new BehaviorSubject(null)
 
+  currentlyOpen = null
+
   getNotes() {
     this.notesService.list().then((list: FolderInfo[]) => {
       this.list$.next(list)
@@ -25,7 +27,17 @@ export class NotesComponent implements OnInit {
     })
   }
 
+  openedFolder(folder: string) {
+    this.currentlyOpen = folder
+    localStorage.setItem('openFolder', folder)
+  }
+
+  closedFolder(folder: string) {
+    if (localStorage.getItem('openFolder') === folder) localStorage.removeItem('openFolder')
+  }
+
   ngOnInit(): void {
+    this.currentlyOpen = localStorage.getItem('openFolder')
     this.getNotes()
   }
 

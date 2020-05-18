@@ -22,7 +22,11 @@ import { NotesComponent } from './notes/notes.component'
 import { HelpComponent } from './help/help.component'
 import { NoteComponent } from './note/note.component'
 import { MatSnackBarModule } from '@angular/material/snack-bar'
-import { MatProgressBarModule, MatProgressBar } from '@angular/material/progress-bar'
+import { MatProgressBarModule } from '@angular/material/progress-bar'
+import { MatExpansionModule } from '@angular/material/expansion'
+import { FolderComponent } from './folder/folder.component'
+import { MatSelectModule } from '@angular/material/select'
+
 
 @NgModule({
   declarations: [
@@ -32,7 +36,8 @@ import { MatProgressBarModule, MatProgressBar } from '@angular/material/progress
     LoginComponent,
     NotesComponent,
     HelpComponent,
-    NoteComponent
+    NoteComponent,
+    FolderComponent
   ],
   imports: [
     BrowserModule,
@@ -51,7 +56,9 @@ import { MatProgressBarModule, MatProgressBar } from '@angular/material/progress
     MatToolbarModule,
     ReactiveFormsModule,
     MatSnackBarModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MatExpansionModule,
+    MatSelectModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
