@@ -1,0 +1,14 @@
+<div fxLayout="column" fxLayoutGap="1em" class="stdMargin">
+    <div fxLayout="column" fxLayoutGap="0.3em">
+        <h1 *ngIf="isFirstTime">Set up a password</h1>
+        <h1 *ngIf="!isFirstTime">Enter Password</h1>
+        <p *ngIf="isFirstTime">Must be over 15 characters - the longer, the better.</p>
+    </div>
+    <form [formGroup]="passwordForm" (ngSubmit)="submit()" fxLayout="row wrap" fxLayoutAlign="start center"
+        fxLayoutGap="1em">
+        <mat-form-field>
+            <input matInput formControlName="password" placeholder="Password" type="password" required>
+        </mat-form-field>
+        <button mat-raised-button color="primary" type="submit">Send</button>
+    </form>
+</div>

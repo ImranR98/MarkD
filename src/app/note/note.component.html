@@ -1,0 +1,19 @@
+<div *ngIf="activeNote; else loading" fxLayout="column" fxLayoutAlign="space-between" class="stdPaddingBottom" style="height: 100%;">
+    <div>
+        <div class="stdMarginTop stdMarginHorizontal">
+            <mat-form-field *ngIf="new">
+                <input matInput placeholder="File Name" [(ngModel)]="activeNote.fileName">
+            </mat-form-field>
+            <p *ngIf="!new"><strong>{{activeNote.fileName}}</strong></p>
+        </div>
+        <app-editor [data]="activeNote.data"></app-editor>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="1em" class="stdMarginHorizontal">
+        <button mat-button color="warn" (click)="delete()">Delete</button>
+        <button mat-button color="primary" (click)="save()">Save</button>
+    </div>
+</div>
+
+<ng-template #loading>
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</ng-template>

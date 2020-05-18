@@ -1,1 +1,111 @@
+@import '~@angular/material/theming';
+@include mat-core();
+
+$app-primary: mat-palette($mat-indigo);
+$app-accent: mat-palette($mat-blue-gray);
+$app-warn: mat-palette($mat-red);
+
+$app-theme-light: mat-light-theme($app-primary, $app-accent, $app-warn);
+$app-theme-dark: mat-dark-theme($app-primary, $app-accent, $app-warn);
+
+@media (prefers-color-scheme: light) {
+    @include angular-material-theme($app-theme-light);
+    html, body {
+      background-color: rgb(255, 255, 255);
+      color: #000
+    }
+    .active {
+        color: mat-color($app-accent, darker) !important;
+        background-color: mat-color($app-accent, default, 0.1) !important;
+    }
+    .activeLink {
+        color: mat-color($app-accent, lighter)
+    }
+    .archived {
+        background-color: rgba(0, 0, 0, 0.05) !important;
+    }
+    mat-sidenav-container, mat-sidenav {
+        background-color: rgb(255, 255, 255) !important;
+    }
+    .warn {
+        color: mat-color($app-warn)
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    @include angular-material-theme($app-theme-dark);
+    html, body {
+      background-color: rgb(25, 25, 25);
+      color: #FFF;
+    }
+    .active {
+        color: mat-color($app-accent, lighter) !important;
+        background-color: mat-color($app-accent, default, 0.1) !important;
+    }
+    .activeLink {
+        color: mat-color($app-accent, lighter)
+    }
+    .archived {
+        background-color: rgba(255, 255, 255, 0.05) !important;
+    }
+    mat-sidenav-container, mat-sidenav {
+        background-color: rgb(25, 25, 25) !important;
+    }
+    .warn {
+        color: mat-color($app-warn)
+    }
+}
+
 /* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.stdMargin {
+    margin: 1em;
+}
+
+.stdMarginHorizontal {
+    margin-left: 1em !important;
+    margin-right: 1em !important;
+}
+
+.stdMarginTop {
+    margin-top: 1em;
+}
+
+.stdMarginBottom {
+    margin-bottom: 1em;
+}
+.stdPaddingBottom {
+    padding-bottom: 1em;
+}
+
+.hideInput {
+    border: none;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.large {
+    font-size: large;
+}
+
+.hiddenLink {
+    text-decoration: none;
+    color: inherit;
+}
+
+.hide {
+    display: none !important;
+}
+
+.height100 {
+    height: 100%;
+}
+
+a {
+    color: inherit;
+}

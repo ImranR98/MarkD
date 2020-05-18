@@ -7,4 +7,5 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'NotesMD';
+  test = '# Hello Markdown\n```csharp\npublic class Foo {}\n```'
 }

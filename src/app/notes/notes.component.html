@@ -1,0 +1,12 @@
+<div *ngIf="list$ | async as list; else loading" fxLayout="column" fxLayoutGap="1em">
+    <div *ngFor="let folder of list">
+        {{folder.folder}}
+        <div *ngFor="let note of folder.notes" fxLayout="row wrap" fxLayoutGap="1em">
+            <a [routerLink]="['/note', folder.folder, note.fileName]">{{note.fileName}}</a>
+        </div>
+    </div>
+</div>
+
+<ng-template #loading>
+    Loading
+</ng-template>
