@@ -93,11 +93,25 @@ const saveNote = (folder, fileName, noteData) => {
 const deleteNote = (folder, fileName) => {
     fs.unlinkSync(`${notesDir}/${folder ? folder + '/' : ''}${fileName}`)
 }
+const renameNote = (folder, fileName, newName) => {
+    fs.renameSync(`${notesDir}/${folder ? folder + '/' : ''}${fileName}`, `${notesDir}/${folder ? folder + '/' : ''}${newName}`)
+}
+const moveNote = (folder, fileName, toFolder) => {
+    if (folder != toFolder) {
+        fs.copyFileSync(`${notesDir}/${folder ? folder + '/' : ''}${fileName}`, `${notesDir}/${toFolder ? toFolder + '/' : ''}${fileName}`)
+        fs.unlinkSync(`${notesDir}/${folder ? folder + '/' : ''}${fileName}`)
+    }
+}
 const createFolder = (folder) => {
     fs.mkdirSync(`${notesDir}/${folder}`)
 }
 const deleteFolder = (folder) => {
     fs.rmdirSync(`${notesDir}/${folder}`)
+}
+const renameFolder = (folder, newFolder) => {
+    if (folder && newFolder) {
+        fs.renameSync(`${notesDir}/${folder}`, `${notesDir}/${newFolder}`)
+    } else throw null
 }
 
 // Read and write to password file
@@ -224,6 +238,28 @@ app.post('/note/delete', /*checkIfAuthenticated,*/(req, res) => {
         }
     }
 })
+app.post('/note/move', /*checkIfAuthenticated,*/(req, res) => {
+    if (!req.body.fileName) res.status(400).send()
+    else {
+        try {
+            res.send(moveNote(req.body.folder, req.body.fileName, req.body.toFolder))
+        } catch (err) {
+            console.log(err)
+            res.status(500).send(err)
+        }
+    }
+})
+app.post('/note/rename', /*checkIfAuthenticated,*/(req, res) => {
+    if (!req.body.fileName) res.status(400).send()
+    else {
+        try {
+            res.send(renameNote(req.body.folder, req.body.fileName, req.body.newName))
+        } catch (err) {
+            console.log(err)
+            res.status(500).send(err)
+        }
+    }
+})
 app.post('/folder/create', /*checkIfAuthenticated,*/(req, res) => {
     if (!req.body.folder) res.status(400).send
     else {
@@ -241,6 +277,17 @@ app.post('/folder/delete', /*checkIfAuthenticated,*/(req, res) => {
     else {
         try {
             res.send(deleteFolder(req.body.folder))
+        } catch (err) {
+            console.log(err)
+            res.status(500).send(err)
+        }
+    }
+})
+app.post('/folder/rename', /*checkIfAuthenticated,*/(req, res) => {
+    if (!req.body.folder || !req.body.newFolder) res.status(400).send()
+    else {
+        try {
+            res.send(renameFolder(req.body.folder, req.body.newFolder))
         } catch (err) {
             console.log(err)
             res.status(500).send(err)

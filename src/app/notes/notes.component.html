@@ -1,6 +1,13 @@
-<div *ngIf="list$ | async as list; else loading" fxLayout="column" fxLayoutGap="1em" class="stdMargin">
+<div *ngIf="list; else loading" fxLayout="column" fxLayoutGap="1em" class="stdMargin">
+    <div fxLayout="row" fxLayoutAlign="end" fxFlex="100%">
+        <button mat-button style="overflow: hidden;" (click)="addFolder()" aria-label="Add Folder"
+            color="primary">
+            + Add Folder
+        </button>
+    </div>
     <mat-accordion>
-        <mat-expansion-panel *ngFor="let folder of list" [expanded]="folder.folder === currentlyOpen" (opened)="openedFolder(folder.folder)" (closed)="closedFolder(folder.folder)">
+        <mat-expansion-panel *ngFor="let folder of list" [expanded]="folder.folder === currentlyOpen"
+            (opened)="openedFolder(folder.folder)" (closed)="closedFolder(folder.folder)">
             <mat-expansion-panel-header>
                 <mat-panel-title>
                     {{folder.folder ? folder.folder : '/'}}
@@ -9,7 +16,7 @@
                     {{folder.notes.length == 0 ? 'No Files' : folder.notes.length == 1 ? '1 File' : folder.notes.length + ' Files'}}
                 </mat-panel-description>
             </mat-expansion-panel-header>
-            <app-folder [folder]="folder"></app-folder>
+            <app-folder [folder]="folder" [list]="list" (noteMover)="moveNote($event)"></app-folder>
         </mat-expansion-panel>
     </mat-accordion>
 </div>

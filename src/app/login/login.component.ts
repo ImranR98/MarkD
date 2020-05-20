@@ -23,7 +23,7 @@ export class LoginComponent implements OnInit {
     if (this.authService.ifLoggedIn(false)) this.router.navigate(['/notes'])
     this.authService.ifPassword().then(res => {
       this.isFirstTime = res
-    }).catch(err => this.errorService.showError(err, () => this.firstTimeCheck()))
+    }).catch(err => this.errorService.showError(err, () => this.firstTimeCheck(), null))
   }
 
   ngOnInit(): void {

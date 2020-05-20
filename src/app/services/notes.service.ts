@@ -15,11 +15,23 @@ export class NotesService {
   }
 
   list = async (): Promise<FolderInfo[]> => {
-    return await this.http.get(environment.apiUrl + '/list', this.httpOptions).toPromise() as FolderInfo[]
+    let folders = await this.http.get(environment.apiUrl + '/list', this.httpOptions).toPromise() as FolderInfo[]
+    folders = folders.map(folder => {
+      folder.notes = folder.notes.map(note => {
+        typeof note.created == 'string' ? note.created = new Date(note.created) : null
+        typeof note.modified == 'string' ? note.modified = new Date(note.modified) : null
+        return note
+      })
+      return folder
+    })
+    return folders
   }
 
   getNote = async (folder: string, fileName: string): Promise<Note> => {
-    return await this.http.post(environment.apiUrl + `/note/get`, { folder, fileName }, this.httpOptions).toPromise() as Note
+    let note = await this.http.post(environment.apiUrl + `/note/get`, { folder, fileName }, this.httpOptions).toPromise() as Note
+    typeof note.info.created == 'string' ? note.info.created = new Date(note.info.created) : null
+    typeof note.info.modified == 'string' ? note.info.modified = new Date(note.info.modified) : null
+    return note
   }
 
   saveNote = async (fileName: string, folder: string, data: string) => {
@@ -31,11 +43,23 @@ export class NotesService {
     return await this.http.post(environment.apiUrl + `/note/delete`, { folder, fileName }, this.httpOptions).toPromise()
   }
 
+  moveNote = async (folder: string, toFolder: string, fileName: string) => {
+    return await this.http.post(environment.apiUrl + `/note/move`, { folder, fileName, toFolder }, this.httpOptions).toPromise()
+  }
+
+  renameNote = async (folder: string, fileName: string, newName: string) => {
+    return await this.http.post(environment.apiUrl + `/note/rename`, { folder, fileName, newName }, this.httpOptions).toPromise()
+  }
+
   createFolder = async (folder: string) => {
     return await this.http.post(environment.apiUrl + `/folder/create`, { folder }, this.httpOptions).toPromise()
   }
 
   deleteFolder = async (folder: string) => {
     return await this.http.post(environment.apiUrl + `/folder/delete`, { folder }, this.httpOptions).toPromise()
+  }
+
+  renameFolder = async (folder: string, newFolder: string) => {
+    return await this.http.post(environment.apiUrl + `/folder/rename`, { folder, newFolder }, this.httpOptions).toPromise()
   }
 }

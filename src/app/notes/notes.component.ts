@@ -1,8 +1,8 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { NoteInfo, FolderInfo } from '../types';
+import { Component, OnInit } from '@angular/core';
+import { FolderInfo } from '../types';
 import { NotesService } from '../services/notes.service';
 import { ErrorService } from '../services/error.service';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-notes',
@@ -16,6 +16,8 @@ export class NotesComponent implements OnInit {
   processing: boolean = false
   list$: BehaviorSubject<FolderInfo[]> = new BehaviorSubject(null)
 
+  list: FolderInfo[] = null
+
   currentlyOpen = null
 
   getNotes() {
@@ -23,7 +25,7 @@ export class NotesComponent implements OnInit {
       this.list$.next(list)
     }).catch(err => {
       this.list$.next(null)
-      this.errorService.showError(err, () => this.getNotes())
+      this.errorService.showError(err, () => this.getNotes(), null)
     })
   }
 
@@ -36,8 +38,39 @@ export class NotesComponent implements OnInit {
     if (localStorage.getItem('openFolder') === folder) localStorage.removeItem('openFolder')
   }
 
+  addFolder(newFolder: string = '') {
+    if (!newFolder) {
+      newFolder = prompt('Enter Folder Name')
+    }
+    let exists = false
+    this.list.forEach(folder => folder.folder.trim() == newFolder.trim() ? exists = true : null)
+    if (exists) {
+      this.errorService.showError(`${newFolder.trim()} already exists`)
+    } else {
+      this.notesService.createFolder(newFolder).then(() => {
+        this.list.push({
+          folder: newFolder,
+          notes: []
+        })
+      }).catch(err => {
+        this.errorService.showError(err, () => this.addFolder(newFolder))
+      })
+    }
+  }
+
+  moveNote(e: { folder: string, fileName: string, toFolder: string }) {
+    this.notesService.moveNote(e.folder, e.toFolder, e.fileName).then(() => {
+      this.ngOnInit()
+    }).catch(err => {
+      this.errorService.showError(err, () => this.moveNote({ folder: e.folder, fileName: e.fileName, toFolder: e.toFolder }))
+    })
+  }
+
   ngOnInit(): void {
     this.currentlyOpen = localStorage.getItem('openFolder')
+    this.list$.subscribe(list => {
+      this.list = list
+    })
     this.getNotes()
   }
 

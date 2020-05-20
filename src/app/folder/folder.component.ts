@@ -1,6 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, Output, EventEmitter } from '@angular/core';
 import { FolderInfo, NoteInfo, Note } from '../types';
-import { BehaviorSubject } from 'rxjs';
+import { MediaChange, MediaObserver } from '@angular/flex-layout';
+import { MatGridList } from '@angular/material/grid-list';
+import { NotesService } from '../services/notes.service';
+import { ErrorService } from '../services/error.service';
 
 @Component({
   selector: 'app-folder',
@@ -9,6 +12,8 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class FolderComponent implements OnInit {
   @Input() folder: FolderInfo
+  @Input() list: FolderInfo[]
+  @Output() noteMover: EventEmitter<{ folder: string, fileName: string, toFolder: string }> = new EventEmitter()
 
   displayedNotes: NoteInfo[] = []
 
@@ -17,7 +22,16 @@ export class FolderComponent implements OnInit {
   selectedSort = 0
   processing = false
 
-  constructor() { }
+  constructor(private mediaObserver: MediaObserver, private noteService: NotesService, private errorService: ErrorService) { }
+
+  @ViewChild('grid') grid: MatGridList;
+  gridByBreakpoint = {
+    xl: 8,
+    lg: 6,
+    md: 4,
+    sm: 2,
+    xs: 1
+  }
 
   ngOnInit(): void {
     try {
@@ -27,6 +41,12 @@ export class FolderComponent implements OnInit {
       // Error if there was no saved value
     }
     this.refreshDisplayedNotes()
+  }
+
+  ngAfterContentInit() {
+    this.mediaObserver.asObservable().subscribe((change: MediaChange[]) => {
+      this.grid.cols = this.gridByBreakpoint[change[0].mqAlias];
+    });
   }
 
   refreshDisplayedNotes() {
@@ -49,14 +69,38 @@ export class FolderComponent implements OnInit {
       case 1:
         this.displayedNotes = this.displayedNotes.sort((a, b) => b.created.toString().localeCompare(a.created.toString()))
         break;
-      case 1:
+      case 2:
         this.displayedNotes = this.displayedNotes.sort((a, b) => b.modified.toString().localeCompare(a.modified.toString()))
         break;
       default:
-        this.displayedNotes = this.displayedNotes.sort((a, b) => b.created.toString().localeCompare(a.created.toString()))
+        this.displayedNotes = this.displayedNotes.sort((a, b) => b.modified.toString().localeCompare(a.modified.toString()))
         break;
     }
     this.processing = false
   }
 
+  delete(folder: string, fileName: string) {
+    if (confirm('Delete this file? This is permanent.')) {
+      this.noteService.deleteNote(folder, fileName).then(() => {
+        this.folder.notes = this.folder.notes.filter(note => note.fileName != fileName)
+        this.refreshDisplayedNotes()
+      }).catch(err => this.errorService.showError(err, () => this.delete(folder, fileName)))
+    }
+  }
+
+  deleteThis() {
+    this.noteService.deleteFolder(this.folder.folder).then(() => {
+      // Should disappear
+    }).catch(err => this.errorService.showError(err, () => this.deleteThis()))
+  }
+
+  moveNote(folder: string, toFolder: string, fileName: string) {
+    this.noteMover.emit({ folder, fileName, toFolder })
+  }
+
+  renameNote(folder: string, newFolder: string) {
+    this.noteService.renameFolder(folder, newFolder).then(() => {
+
+    }).catch(err => this.errorService.showError(err, () => this.renameNote(folder, newFolder)))
+  }
 }

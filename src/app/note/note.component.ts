@@ -29,7 +29,7 @@ export class NoteComponent implements OnInit, OnDestroy {
     }).catch(err => {
       this.loading = false
       this.note$.next(null)
-      this.errorService.showError(err, () => this.getNote(folder, fileName))
+      this.errorService.showError(err, () => this.getNote(folder, fileName), null)
     })
   }
 
@@ -52,7 +52,7 @@ export class NoteComponent implements OnInit, OnDestroy {
 
   save() {
     this.notesService.saveNote(this.activeNote.fileName, this.note$.value.folder, this.activeNote.data).then(() => {
-      this.errorService.showError('Saved', null, 2000)
+      this.errorService.showError('Saved', null)
       if (!this.activeNote.fileName.endsWith('.md')) this.activeNote.fileName += '.md'
       this.new = false
     }).catch(err => {
@@ -64,7 +64,7 @@ export class NoteComponent implements OnInit, OnDestroy {
     if (!this.new) {
       if (confirm('Delete this file? This is permanent.')) {
         this.notesService.deleteNote(this.note$.value.folder, this.note$.value.info.fileName).then(() => {
-          this.errorService.showError('Deleted', null, 2000)
+          this.errorService.showError('Deleted')
           this.new = true
           this.router.navigate(['/'])
         }).catch(err => {

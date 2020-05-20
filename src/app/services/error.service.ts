@@ -45,7 +45,7 @@ export class ErrorService {
     return standardError;
   }
 
-  showError(error: any, callback: Function = null, duration: number = null) {
+  showError(error: any, callback: Function = null, duration: number = 5000) {
     if (!environment.production) {
       console.log(error);
     }
