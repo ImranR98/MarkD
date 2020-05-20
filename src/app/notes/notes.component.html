@@ -6,7 +6,7 @@
         </button>
     </div>
     <mat-accordion>
-        <mat-expansion-panel *ngFor="let folder of list" [expanded]="folder.folder === currentlyOpen"
+        <mat-expansion-panel *ngFor="let folder of list; let fIndex = index" [expanded]="folder.folder === currentlyOpen"
             (opened)="openedFolder(folder.folder)" (closed)="closedFolder(folder.folder)">
             <mat-expansion-panel-header>
                 <mat-panel-title>
@@ -16,7 +16,7 @@
                     {{folder.notes.length == 0 ? 'No Files' : folder.notes.length == 1 ? '1 File' : folder.notes.length + ' Files'}}
                 </mat-panel-description>
             </mat-expansion-panel-header>
-            <app-folder [folder]="folder" [list]="list" (noteMover)="moveNote($event)"></app-folder>
+            <app-folder [fIndex]="fIndex" [list]="list" (noteMover)="moveNote($event)" (delete)="deleteFolder($event)" (rename)="renameFolder($event)"></app-folder>
         </mat-expansion-panel>
     </mat-accordion>
 </div>

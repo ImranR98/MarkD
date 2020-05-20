@@ -11,9 +11,11 @@ import { ErrorService } from '../services/error.service';
   styleUrls: ['./folder.component.scss']
 })
 export class FolderComponent implements OnInit {
-  @Input() folder: FolderInfo
   @Input() list: FolderInfo[]
+  @Input() fIndex: number
   @Output() noteMover: EventEmitter<{ folder: string, fileName: string, toFolder: string }> = new EventEmitter()
+  @Output() delete: EventEmitter<string> = new EventEmitter()
+  @Output() rename: EventEmitter<string> = new EventEmitter()
 
   displayedNotes: NoteInfo[] = []
 
@@ -22,7 +24,7 @@ export class FolderComponent implements OnInit {
   selectedSort = 0
   processing = false
 
-  constructor(private mediaObserver: MediaObserver, private noteService: NotesService, private errorService: ErrorService) { }
+  constructor(private mediaObserver: MediaObserver, private notesService: NotesService, private errorService: ErrorService) { }
 
   @ViewChild('grid') grid: MatGridList;
   gridByBreakpoint = {
@@ -35,7 +37,7 @@ export class FolderComponent implements OnInit {
 
   ngOnInit(): void {
     try {
-      let savedSort = Number.parseInt(localStorage.getItem(`sort-${this.folder.folder}`))
+      let savedSort = Number.parseInt(localStorage.getItem(`sort-${this.list[this.fIndex].folder}`))
       this.selectedSort = isNaN(savedSort) ? 0 : savedSort
     } catch (err) {
       // Error if there was no saved value
@@ -51,16 +53,16 @@ export class FolderComponent implements OnInit {
 
   refreshDisplayedNotes() {
     this.processing = true
-    localStorage.setItem(`sort-${this.folder.folder}`, this.selectedSort.toString())
+    localStorage.setItem(`sort-${this.list[this.fIndex].folder}`, this.selectedSort.toString())
     if (this.searchQuery.length > 0) {
       let queryWords = this.searchQuery.toLowerCase().split(' ')
-      this.displayedNotes = this.folder.notes.map(note => {
+      this.displayedNotes = this.list[this.fIndex].notes.map(note => {
         let searchHits = 0
         queryWords.forEach(word => note.fileName.toLowerCase().indexOf(word) >= 0 ? searchHits++ : null)
         return { note, searchHits }
       }).filter(result => result.searchHits > 0).sort((a, b) => a.searchHits - b.searchHits).map(result => result.note)
     } else {
-      this.displayedNotes = this.folder.notes
+      this.displayedNotes = this.list[this.fIndex].notes
     }
     switch (this.selectedSort) {
       case 0:
@@ -79,28 +81,36 @@ export class FolderComponent implements OnInit {
     this.processing = false
   }
 
-  delete(folder: string, fileName: string) {
+  deleteNote(folder: string, fileName: string) {
     if (confirm('Delete this file? This is permanent.')) {
-      this.noteService.deleteNote(folder, fileName).then(() => {
-        this.folder.notes = this.folder.notes.filter(note => note.fileName != fileName)
+      this.notesService.deleteNote(folder, fileName).then(() => {
+        this.list[this.fIndex].notes = this.list[this.fIndex].notes.filter(note => note.fileName != fileName)
         this.refreshDisplayedNotes()
-      }).catch(err => this.errorService.showError(err, () => this.delete(folder, fileName)))
+      }).catch(err => this.errorService.showError(err, () => this.deleteNote(folder, fileName)))
+    }
+  }
+
+  renameNote(folder: string, fileName: string) {
+    let newName = prompt('Enter new name')
+    if (newName) {
+      this.notesService.renameNote(folder, fileName, newName).then(() => {
+        this.list[this.fIndex].notes = this.list[this.fIndex].notes.map(note => {
+          if (note.fileName == fileName) note.fileName = newName.endsWith('.md') ? newName : newName + '.md'
+          return note
+        })
+      }).catch(err => this.errorService.showError(err, () => this.renameNote(folder, fileName)))
     }
   }
 
   deleteThis() {
-    this.noteService.deleteFolder(this.folder.folder).then(() => {
-      // Should disappear
-    }).catch(err => this.errorService.showError(err, () => this.deleteThis()))
+    this.delete.emit(this.list[this.fIndex].folder)
   }
 
   moveNote(folder: string, toFolder: string, fileName: string) {
     this.noteMover.emit({ folder, fileName, toFolder })
   }
 
-  renameNote(folder: string, newFolder: string) {
-    this.noteService.renameFolder(folder, newFolder).then(() => {
-
-    }).catch(err => this.errorService.showError(err, () => this.renameNote(folder, newFolder)))
+  renameThis() {
+    this.rename.emit(this.list[this.fIndex].folder)
   }
 }

@@ -48,6 +48,7 @@ export class NotesService {
   }
 
   renameNote = async (folder: string, fileName: string, newName: string) => {
+    if (!newName.endsWith('.md')) newName += '.md'
     return await this.http.post(environment.apiUrl + `/note/rename`, { folder, fileName, newName }, this.httpOptions).toPromise()
   }
 

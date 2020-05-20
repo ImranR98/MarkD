@@ -66,6 +66,24 @@ export class NotesComponent implements OnInit {
     })
   }
 
+  deleteFolder(folder: string) {
+    this.notesService.deleteFolder(folder).then(() => {
+      this.list = this.list.filter(lFolder => lFolder.folder != folder)
+    }).catch(err => this.errorService.showError(err, () => this.deleteFolder(folder)))
+  }
+
+  renameFolder(folder: string) {
+    let newName = prompt('Enter new name')
+    if (newName) {
+      this.notesService.renameFolder(folder, newName).then(() => {
+        this.list = this.list.map(lFolder => {
+          if (lFolder.folder == folder) lFolder.folder = newName
+          return lFolder
+        })
+      }).catch(err => this.errorService.showError(err, () => this.renameFolder(folder)))
+    }
+  }
+
   ngOnInit(): void {
     this.currentlyOpen = localStorage.getItem('openFolder')
     this.list$.subscribe(list => {

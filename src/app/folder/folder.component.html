@@ -1,6 +1,7 @@
 <div fxLayout="row" fxLayout.lt-sm="column-reverse" fxLayoutAlign="space-between" fxLayoutGap="1em"
     fxLayoutGap.lt-sm="0">
-    <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="1em" fxLayoutGap.lt-sm="0" *ngIf="folder.notes.length > 0">
+    <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="1em" fxLayoutGap.lt-sm="0"
+        *ngIf="list[fIndex].notes.length > 0">
         <mat-form-field>
             <input matInput placeholder="Search" (change)="refreshDisplayedNotes()" [(ngModel)]="searchQuery">
         </mat-form-field>
@@ -13,10 +14,19 @@
             </mat-select>
         </mat-form-field>
     </div>
-    <div fxLayout="row" fxLayoutAlign="end" fxFlex="100%">
-        <button mat-button style="overflow: hidden;" routerLink="/note/{{folder.folder}}" aria-label="Add File"
-            color="primary">
-            + Add File
+    <div fxLayout="row" fxLayoutGap="1em" fxLayoutAlign="end" fxFlex="100%">
+        <button mat-icon-button style="overflow: hidden;" aria-label="Delete Folder" color="warn"
+            *ngIf="list[fIndex].notes.length == 0 && list[fIndex].folder" class="stdMarginTop" (click)="deleteThis()"
+            matTooltip="Delete Folder" [matTooltipShowDelay]="1500">
+            <mat-icon>delete_outline</mat-icon>
+        </button>
+        <button mat-icon-button style="overflow: hidden;" aria-label="Rename Folder" *ngIf="list[fIndex].folder"
+            class="stdMarginTop" (click)="renameThis()" matTooltip="Rename Folder" [matTooltipShowDelay]="1500">
+            <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button style="overflow: hidden;" routerLink="/note/{{list[fIndex].folder}}"
+            aria-label="Add File" color="primary" matTooltip="Add File" [matTooltipShowDelay]="1500">
+            <mat-icon>add</mat-icon>
         </button>
     </div>
 </div>
@@ -27,12 +37,12 @@
             class="noteContainer">
             <mat-menu #noteMenu="matMenu">
                 <div *ngFor="let listFolder of list">
-                    <button mat-menu-item *ngIf="listFolder.folder != folder.folder"
-                        (click)="moveNote(folder.folder, listFolder.folder, note.fileName)">{{listFolder.folder ? listFolder.folder : '/'}}</button>
+                    <button mat-menu-item *ngIf="listFolder.folder != list[fIndex].folder"
+                        (click)="moveNote(list[fIndex].folder, listFolder.folder, note.fileName)">{{listFolder.folder ? listFolder.folder : '/'}}</button>
                 </div>
             </mat-menu>
-            <div [routerLink]="['/note', folder.folder, note.fileName]" fxLayout="column" fxLayoutAlign="space-between"
-                fxLayoutGap="1em" class="note">
+            <div [routerLink]="['/note', list[fIndex].folder, note.fileName]" fxLayout="column"
+                fxLayoutAlign="space-between" fxLayoutGap="1em" class="note">
                 <div fxLayout="column">
                     <span class="stdMarginBottom" class="textOverflow">{{note.fileName}}</span>
                     <small>Modified:
@@ -42,27 +52,28 @@
                 </div>
                 <div fxLayout="row" fxLayoutGap="1em" fxLayoutAlign="space-between" fxLayoutGap="1em">
                     <button mat-icon-button style="overflow: hidden;" color="warn"
-                        (click)="delete(folder.folder, note.fileName); $event.stopPropagation()" aria-label="Delete"
-                        matTooltip="Delete" [matTooltipShowDelay]="1500">
+                        (click)="deleteNote(list[fIndex].folder, note.fileName); $event.stopPropagation()"
+                        aria-label="Delete" matTooltip="Delete" [matTooltipShowDelay]="1500">
                         <mat-icon>delete_outline</mat-icon>
                     </button>
-                    <button mat-icon-button style="overflow: hidden;" color="primary" [matMenuTriggerFor]="noteMenu"
-                        (click)="$event.stopPropagation()" aria-label="Move" matTooltip="Move"
-                        [matTooltipShowDelay]="1500">
-                        <mat-icon>swap_vert</mat-icon>
-                    </button>
+                    <div fxLayout="row" fxLayoutGap="1em" fxLayoutAlign="end">
+                        <button mat-icon-button style="overflow: hidden;" aria-label="Rename" class="stdMarginTop"
+                            (click)="renameNote(list[fIndex].folder, note.fileName); $event.stopPropagation()"
+                            matTooltip="Rename" [matTooltipShowDelay]="1500">
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                        <button mat-icon-button style="overflow: hidden;" color="primary" [matMenuTriggerFor]="noteMenu"
+                            (click)="$event.stopPropagation()" aria-label="Move" matTooltip="Move"
+                            [matTooltipShowDelay]="1500">
+                            <mat-icon>swap_vert</mat-icon>
+                        </button>
+                    </div>
                 </div>
             </div>
         </mat-grid-tile>
     </mat-grid-list>
 </div>
-<div fxLayout="row" fxLayoutGap="1em" fxLayoutAlign="default center">
-    <span *ngIf="displayedNotes.length == 0">No Files.</span>
-    <button mat-button style="overflow: hidden;" aria-label="Delete Folder" color="warn"
-        *ngIf="folder.notes.length == 0 && folder.folder" class="stdMarginTop" (click)="deleteThis()">
-        Delete Folder
-    </button>
-</div>
+<span *ngIf="displayedNotes.length == 0">No Files.</span>
 <ng-template *ngIf="processing">
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </ng-template>
