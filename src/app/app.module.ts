@@ -18,13 +18,13 @@ import { LoginComponent } from './login/login.component'
 import { MatIconModule } from '@angular/material/icon'
 import { MatTooltipModule } from '@angular/material/tooltip'
 import { MatToolbarModule } from '@angular/material/toolbar'
-import { NotesComponent } from './notes/notes.component'
+import { CategoriesComponent } from './categories/categories.component'
 import { HelpComponent } from './help/help.component'
 import { NoteComponent } from './note/note.component'
 import { MatSnackBarModule } from '@angular/material/snack-bar'
 import { MatProgressBarModule } from '@angular/material/progress-bar'
 import { MatExpansionModule } from '@angular/material/expansion'
-import { FolderComponent } from './folder/folder.component'
+import { CategoryComponent } from './category/category.component'
 import { MatSelectModule } from '@angular/material/select'
 import { MatGridListModule } from '@angular/material/grid-list'
 import { MatRippleModule } from '@angular/material/core'
@@ -36,10 +36,10 @@ import { MatMenuModule } from '@angular/material/menu'
     MarkdownComponent,
     EditorComponent,
     LoginComponent,
-    NotesComponent,
+    CategoriesComponent,
     HelpComponent,
     NoteComponent,
-    FolderComponent
+    CategoryComponent
   ],
   imports: [
     BrowserModule,

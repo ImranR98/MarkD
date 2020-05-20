@@ -1,0 +1,40 @@
+<div *ngIf="categories; else loading" fxLayout="column" class="stdMargin">
+    <div fxLayout="row" fxLayoutAlign="space-between start" fxFlex="100%">
+        <h1>Categories</h1>
+        <button mat-button style="overflow: hidden;" (click)="addCategory()" aria-label="Add Category" color="primary">
+            + Add Category
+        </button>
+    </div>
+    <mat-grid-list #grid role="list" cols="1" rowHeight="10em" gutterSize="1em"
+        style="overflow: auto; min-height:max-content;" [class.hide]="!categories">
+        <mat-grid-tile matRipple role="listitem" *ngFor="let category of categories" fxLayout="column" class="noteContainer">
+            <div [routerLink]="['/category', category.category]" fxLayout="column" fxLayoutAlign="space-between"
+                fxLayoutGap="1em" class="note">
+                <div fxLayout="column">
+                    <span class="stdMarginBottom" class="textOverflow">{{category.category ? category.category : 'Uncategorized'}}</span>
+                    <small>{{category.categories.length == 0 ? 'No Notes' : category.categories.length == 1 ? '1 Note' : category.categories.length + ' Notes'}}</small>
+                </div>
+                <div fxLayout="row" fxLayoutGap="1em" fxLayoutAlign="space-between" fxLayoutGap="1em">
+                    <button mat-icon-button style="overflow: hidden;" color="warn"
+                        (click)="deleteCategory(category.category); $event.stopPropagation()" aria-label="Delete"
+                        matTooltip="{{category.categories.length > 0 ? 'Delete (must be empty)' : 'Delete'}}"
+                        [matTooltipShowDelay]="1500" [disabled]="category.categories.length > 0" *ngIf="category.category">
+                        <mat-icon>delete_outline</mat-icon>
+                    </button>
+                    <div *ngIf="!category.category"></div>
+                    <div fxLayout="row" fxLayoutGap="1em" fxLayoutAlign="end">
+                        <button mat-icon-button style="overflow: hidden;" aria-label="Rename" class="stdMarginTop"
+                            (click)="renameCategory(category.category); $event.stopPropagation()" matTooltip="Rename"
+                            [matTooltipShowDelay]="1500">
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </mat-grid-tile>
+    </mat-grid-list>
+</div>
+
+<ng-template #loading>
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</ng-template>

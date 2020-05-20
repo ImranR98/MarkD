@@ -4,18 +4,18 @@ export class NoteInfo {
     created: Date | string = new Date()
 }
 
-export class FolderInfo {
-    folder: string = ''
-    notes: NoteInfo[] = []
+export class CategoryInfo {
+    category: string = ''
+    categories: NoteInfo[] = []
 }
 
 export class Note {
     info: NoteInfo = new NoteInfo()
-    folder: string = ''
+    category: string = ''
     data: string = ''
 
-    constructor(folder: string = '') {
-        this.folder = folder
+    constructor(category: string = '') {
+        this.category = category
     }
 }
 

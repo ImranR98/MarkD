@@ -51,16 +51,21 @@ checkIfAuthenticated = expressJwt({
     requestProperty: 'jwt'
 })
 
-const getFolders = () => {
-    return [''].concat(fs.readdirSync(notesDir).filter(item => fs.statSync(`${notesDir}/${item}`).isDirectory()))
+const getCategories = () => {
+    return [''].concat(fs.readdirSync(notesDir).filter(file => fs.statSync(`${notesDir}/${file}`).isDirectory())).map(category => {
+        return {
+            category: category,
+            categories: fs.readdirSync(`${notesDir}/${category}`).filter(file => file.toLowerCase().endsWith('.md'))
+        }
+    })
 }
-const getFolder = (folder) => {
-    let target = `${notesDir}${folder ? `/${folder}` : ''}`
+const getCategory = (category) => {
+    let target = `${notesDir}${category ? `/${category}` : ''}`
     if (fs.existsSync(target)) {
         if (fs.statSync(target).isDirectory()) {
             let data = {
-                folder: folder,
-                notes: fs.readdirSync(target).filter(fileName => fileName.toLowerCase().endsWith('.md')).map(fileName => {
+                category: category,
+                categories: fs.readdirSync(target).filter(fileName => fileName.toLowerCase().endsWith('.md')).map(fileName => {
                     let stats = fs.statSync(`${target}/${fileName}`)
                     return {
                         fileName: fileName,
@@ -74,42 +79,42 @@ const getFolder = (folder) => {
     }
     throw null
 }
-const getNote = (folder, fileName) => {
-    let stats = fs.statSync(`${notesDir}/${folder ? folder + '/' : ''}${fileName}`)
+const getNote = (category, fileName) => {
+    let stats = fs.statSync(`${notesDir}/${category ? category + '/' : ''}${fileName}`)
     return {
         info: {
             fileName: fileName,
             modified: stats.mtime,
             created: stats.ctime
         },
-        folder: folder ? folder : '',
-        data: fs.readFileSync(`${notesDir}/${folder ? folder + '/' : ''}${fileName}`).toString()
+        category: category ? category : '',
+        data: fs.readFileSync(`${notesDir}/${category ? category + '/' : ''}${fileName}`).toString()
     }
 }
-const saveNote = (folder, fileName, noteData) => {
-    fs.writeFileSync(`${notesDir}/${folder ? folder + '/' : ''}${fileName}`, noteData ? noteData : '')
+const saveNote = (category, fileName, noteData) => {
+    fs.writeFileSync(`${notesDir}/${category ? category + '/' : ''}${fileName}`, noteData ? noteData : '')
 }
-const deleteNote = (folder, fileName) => {
-    fs.unlinkSync(`${notesDir}/${folder ? folder + '/' : ''}${fileName}`)
+const deleteNote = (category, fileName) => {
+    fs.unlinkSync(`${notesDir}/${category ? category + '/' : ''}${fileName}`)
 }
-const renameNote = (folder, fileName, newName) => {
-    fs.renameSync(`${notesDir}/${folder ? folder + '/' : ''}${fileName}`, `${notesDir}/${folder ? folder + '/' : ''}${newName}`)
+const renameNote = (category, fileName, newName) => {
+    fs.renameSync(`${notesDir}/${category ? category + '/' : ''}${fileName}`, `${notesDir}/${category ? category + '/' : ''}${newName}`)
 }
-const moveNote = (folder, fileName, toFolder) => {
-    if (folder != toFolder) {
-        fs.copyFileSync(`${notesDir}/${folder ? folder + '/' : ''}${fileName}`, `${notesDir}/${toFolder ? toFolder + '/' : ''}${fileName}`)
-        fs.unlinkSync(`${notesDir}/${folder ? folder + '/' : ''}${fileName}`)
+const moveNote = (category, fileName, toCategory) => {
+    if (category != toCategory) {
+        fs.copyFileSync(`${notesDir}/${category ? category + '/' : ''}${fileName}`, `${notesDir}/${toCategory ? toCategory + '/' : ''}${fileName}`)
+        fs.unlinkSync(`${notesDir}/${category ? category + '/' : ''}${fileName}`)
     }
 }
-const createFolder = (folder) => {
-    fs.mkdirSync(`${notesDir}/${folder}`)
+const createCategory = (category) => {
+    fs.mkdirSync(`${notesDir}/${category}`)
 }
-const deleteFolder = (folder) => {
-    fs.rmdirSync(`${notesDir}/${folder}`)
+const deleteCategory = (category) => {
+    fs.rmdirSync(`${notesDir}/${category}`)
 }
-const renameFolder = (folder, newFolder) => {
-    if (folder && newFolder) {
-        fs.renameSync(`${notesDir}/${folder}`, `${notesDir}/${newFolder}`)
+const renameCategory = (category, newCategory) => {
+    if (category && newCategory) {
+        fs.renameSync(`${notesDir}/${category}`, `${notesDir}/${newCategory}`)
     } else throw null
 }
 
@@ -196,9 +201,9 @@ app.post('/changePassword', checkIfAuthenticated, (req, res) => {
     }
 })
 
-app.get('/folders', checkIfAuthenticated, (req, res) => {
+app.get('/categories', checkIfAuthenticated, (req, res) => {
     try {
-        res.send(getFolders())
+        res.send(getCategories())
     } catch (err) {
         console.log(err)
         res.sendStatus(500).send(err)
@@ -208,7 +213,7 @@ app.post('/note/get', checkIfAuthenticated, (req, res) => {
     if (!req.body.fileName) res.sendStatus(400).send()
     else {
         try {
-            res.send(getNote(req.body.folder, req.body.fileName))
+            res.send(getNote(req.body.category, req.body.fileName))
         } catch (err) {
             console.log(err)
             res.sendStatus(500).send(err)
@@ -219,7 +224,7 @@ app.post('/note/save', checkIfAuthenticated, (req, res) => {
     if (!req.body.fileName) res.sendStatus(400).send()
     else {
         try {
-            res.send(saveNote(req.body.folder, req.body.fileName, req.body.data))
+            res.send(saveNote(req.body.category, req.body.fileName, req.body.data))
         } catch (err) {
             console.log(err)
             res.sendStatus(500).send(err)
@@ -230,7 +235,7 @@ app.post('/note/delete', checkIfAuthenticated, (req, res) => {
     if (!req.body.fileName) res.sendStatus(400).send()
     else {
         try {
-            res.send(deleteNote(req.body.folder, req.body.fileName))
+            res.send(deleteNote(req.body.category, req.body.fileName))
         } catch (err) {
             console.log(err)
             res.sendStatus(500).send(err)
@@ -241,7 +246,7 @@ app.post('/note/move', checkIfAuthenticated, (req, res) => {
     if (!req.body.fileName) res.sendStatus(400).send()
     else {
         try {
-            res.send(moveNote(req.body.folder, req.body.fileName, req.body.toFolder))
+            res.send(moveNote(req.body.category, req.body.fileName, req.body.toCategory))
         } catch (err) {
             console.log(err)
             res.sendStatus(500).send(err)
@@ -252,26 +257,26 @@ app.post('/note/rename', checkIfAuthenticated, (req, res) => {
     if (!req.body.fileName) res.sendStatus(400).send()
     else {
         try {
-            res.send(renameNote(req.body.folder, req.body.fileName, req.body.newName))
+            res.send(renameNote(req.body.category, req.body.fileName, req.body.newName))
         } catch (err) {
             console.log(err)
             res.sendStatus(500).send(err)
         }
     }
 })
-app.post('/folder/get', checkIfAuthenticated, (req, res) => {
+app.post('/category/get', checkIfAuthenticated, (req, res) => {
     try {
-        res.send({ folder: getFolder(req.body.folder), folders: getFolders() })
+        res.send({ category: getCategory(req.body.category), categories: getCategories() })
     } catch (err) {
         console.log(err)
         res.sendStatus(500).send(err)
     }
 })
-app.post('/folder/create', checkIfAuthenticated, (req, res) => {
-    if (!req.body.folder) res.sendStatus(400).send
+app.post('/category/create', checkIfAuthenticated, (req, res) => {
+    if (!req.body.category) res.sendStatus(400).send
     else {
         try {
-            res.send(createFolder(req.body.folder))
+            res.send(createCategory(req.body.category))
         } catch (err) {
             console.log(err)
             res.sendStatus(500).send(err)
@@ -279,22 +284,22 @@ app.post('/folder/create', checkIfAuthenticated, (req, res) => {
     }
 })
 
-app.post('/folder/delete', checkIfAuthenticated, (req, res) => {
-    if (!req.body.folder) res.sendStatus(400).send
+app.post('/category/delete', checkIfAuthenticated, (req, res) => {
+    if (!req.body.category) res.sendStatus(400).send
     else {
         try {
-            res.send(deleteFolder(req.body.folder))
+            res.send(deleteCategory(req.body.category))
         } catch (err) {
             console.log(err)
             res.sendStatus(500).send(err)
         }
     }
 })
-app.post('/folder/rename', checkIfAuthenticated, (req, res) => {
-    if (!req.body.folder || !req.body.newFolder) res.sendStatus(400).send()
+app.post('/category/rename', checkIfAuthenticated, (req, res) => {
+    if (!req.body.category || !req.body.newCategory) res.sendStatus(400).send()
     else {
         try {
-            res.send(renameFolder(req.body.folder, req.body.newFolder))
+            res.send(renameCategory(req.body.category, req.body.newCategory))
         } catch (err) {
             console.log(err)
             res.sendStatus(500).send(err)

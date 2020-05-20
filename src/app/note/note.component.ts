@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription, BehaviorSubject } from 'rxjs';
 import { Note } from '../types';
 import { ErrorService } from '../services/error.service';
-import { NotesService } from '../services/notes.service';
+import { DataService } from '../services/data.service';
 
 @Component({
   selector: 'app-note',
@@ -18,18 +18,18 @@ export class NoteComponent implements OnInit, OnDestroy {
 
   activeNote: { fileName: string, data: string } = null
 
-  constructor(private route: ActivatedRoute, private notesService: NotesService, private errorService: ErrorService, private router: Router) { }
+  constructor(private route: ActivatedRoute, private notesService: DataService, private errorService: ErrorService, private router: Router) { }
 
-  getNote(folder: string, fileName: string) {
+  getNote(category: string, fileName: string) {
     this.loading = true
     this.new = false
-    this.notesService.getNote(folder, fileName).then(note => {
+    this.notesService.getNote(category, fileName).then(note => {
       this.loading = false
       this.note$.next(note)
     }).catch(err => {
       this.loading = false
       this.note$.next(null)
-      this.errorService.showError(err, () => this.getNote(folder, fileName), null)
+      this.errorService.showError(err, () => this.getNote(category, fileName), null)
     })
   }
 
@@ -39,9 +39,9 @@ export class NoteComponent implements OnInit, OnDestroy {
     }))
     this.subs.push(this.route.paramMap.subscribe(params => {
       if (params.get('fileName')) {
-        this.getNote(params.get('folder'), params.get('fileName'))
+        this.getNote(params.get('category'), params.get('fileName'))
       } else {
-        this.note$.next(new Note(params.get('folder')))
+        this.note$.next(new Note(params.get('category')))
       }
     }))
   }
@@ -51,7 +51,7 @@ export class NoteComponent implements OnInit, OnDestroy {
   }
 
   save() {
-    this.notesService.saveNote(this.activeNote.fileName, this.note$.value.folder, this.activeNote.data).then(() => {
+    this.notesService.saveNote(this.activeNote.fileName, this.note$.value.category, this.activeNote.data).then(() => {
       this.errorService.showError('Saved', null)
       if (!this.activeNote.fileName.endsWith('.md')) this.activeNote.fileName += '.md'
       this.new = false
@@ -63,7 +63,7 @@ export class NoteComponent implements OnInit, OnDestroy {
   delete() {
     if (!this.new) {
       if (confirm('Delete this file? This is permanent.')) {
-        this.notesService.deleteNote(this.note$.value.folder, this.note$.value.info.fileName).then(() => {
+        this.notesService.deleteNote(this.note$.value.category, this.note$.value.info.fileName).then(() => {
           this.errorService.showError('Deleted')
           this.new = true
           this.router.navigate(['/'])

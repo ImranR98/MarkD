@@ -1,14 +1,20 @@
-<div class="stdMargin" *ngIf="folder$.value">
-    <h1>{{folder$.value.folder ? folder$.value.folder : '/'}}</h1>
+<div class="stdMargin" *ngIf="category$.value">
+    <div fxLayout="row" fxLayoutGap="1em" fxLayoutAlign="space-between start">
+        <h1>{{category$.value.category ? category$.value.category : 'Uncategorized'}}</h1>
+        <button mat-icon-button style="overflow: hidden;" routerLink="/note/{{category$.value.category}}"
+            aria-label="Add Note" color="primary" matTooltip="Add Note" [matTooltipShowDelay]="1500">
+            <mat-icon>add</mat-icon>
+        </button>
+    </div>
     <div fxLayout="row" fxLayout.lt-sm="column-reverse" fxLayoutAlign="space-between" fxLayoutGap="1em"
         fxLayoutGap.lt-sm="0">
         <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="1em" fxLayoutGap.lt-sm="0"
-            *ngIf="folder$.value.notes.length > 0">
+            *ngIf="category$.value.categories.length > 0">
             <mat-form-field>
-                <input matInput placeholder="Search" (change)="refreshDisplayedNotes()" [(ngModel)]="searchQuery">
+                <input matInput placeholder="Search" (input)="refreshDisplayedCategories()" [(ngModel)]="searchQuery">
             </mat-form-field>
             <mat-form-field>
-                <mat-select (selectionChange)="refreshDisplayedNotes()" placeholder="Sort" name="sort" #sort
+                <mat-select (selectionChange)="refreshDisplayedCategories()" placeholder="Sort" name="sort" #sort
                     [(ngModel)]="selectedSort">
                     <mat-option *ngFor="let sortOption of sortOptions; let i = index" [value]="i">
                         {{sortOption}}
@@ -16,42 +22,36 @@
                 </mat-select>
             </mat-form-field>
         </div>
-        <div fxLayout="row" fxLayoutGap="1em" fxLayoutAlign="end" fxFlex="100%">
-            <button mat-icon-button style="overflow: hidden;" routerLink="/note/{{folder$.value.folder}}"
-                aria-label="Add File" color="primary" matTooltip="Add File" [matTooltipShowDelay]="1500">
-                <mat-icon>add</mat-icon>
-            </button>
-        </div>
     </div>
     <div fxLayout="column" fxLayoutGap="1em">
         <mat-grid-list #grid role="list" cols="1" rowHeight="13em" gutterSize="1em"
-            style="overflow: auto; min-height:max-content;" [class.hide]="displayedNotes.length == 0">
-            <mat-grid-tile matRipple role="listitem" *ngFor="let note of displayedNotes" fxLayout="column"
+            style="overflow: auto; min-height:max-content;" [class.hide]="displayedCategories.length == 0">
+            <mat-grid-tile matRipple role="listitem" *ngFor="let note of displayedCategories" fxLayout="column"
                 class="noteContainer">
                 <mat-menu #noteMenu="matMenu">
-                    <div *ngFor="let folder of folders$.value">
-                        <button mat-menu-item *ngIf="folder != folder$.value.folder"
-                            (click)="moveNote(folder$.value.folder, folder, note.fileName)">{{folder ? folder : '/'}}</button>
+                    <div *ngFor="let category of categories$.value">
+                        <button mat-menu-item *ngIf="category != category$.value.category"
+                            (click)="moveNote(category$.value.category, category.category, note.fileName)">{{category.category ? category.category : 'Uncategorized'}}</button>
                     </div>
                 </mat-menu>
-                <div [routerLink]="['/note', folder$.value.folder ? folder$.value.folder : '/', note.fileName]"
+                <div [routerLink]="['/note', category$.value.category ? category$.value.category : '/', note.fileName]"
                     fxLayout="column" fxLayoutAlign="space-between" fxLayoutGap="1em" class="note">
                     <div fxLayout="column">
                         <span class="stdMarginBottom" class="textOverflow">{{note.fileName}}</span>
                         <small>Modified:
-                            {{note.modified}}</small>
+                            {{formatDate(note.modified)}}</small>
                         <small>Created:
-                            {{note.created}}</small>
+                            {{formatDate(note.created)}}</small>
                     </div>
                     <div fxLayout="row" fxLayoutGap="1em" fxLayoutAlign="space-between" fxLayoutGap="1em">
                         <button mat-icon-button style="overflow: hidden;" color="warn"
-                            (click)="deleteNote(folder$.value.folder, note.fileName); $event.stopPropagation()"
+                            (click)="deleteNote(category$.value.category, note.fileName); $event.stopPropagation()"
                             aria-label="Delete" matTooltip="Delete" [matTooltipShowDelay]="1500">
                             <mat-icon>delete_outline</mat-icon>
                         </button>
                         <div fxLayout="row" fxLayoutGap="1em" fxLayoutAlign="end">
                             <button mat-icon-button style="overflow: hidden;" aria-label="Rename" class="stdMarginTop"
-                                (click)="renameNote(folder$.value.folder, note.fileName); $event.stopPropagation()"
+                                (click)="renameNote(category$.value.category, note.fileName); $event.stopPropagation()"
                                 matTooltip="Rename" [matTooltipShowDelay]="1500">
                                 <mat-icon>edit</mat-icon>
                             </button>
@@ -66,8 +66,8 @@
             </mat-grid-tile>
         </mat-grid-list>
     </div>
-    <span *ngIf="displayedNotes.length == 0 && folder$.value">No Files.</span>
+    <span *ngIf="displayedCategories.length == 0 && category$.value">No Notes.</span>
 </div>
-<div *ngIf="!folder$.value">
+<div *ngIf="!category$.value">
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </div>

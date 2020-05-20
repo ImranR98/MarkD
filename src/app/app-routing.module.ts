@@ -1,35 +1,35 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './login/login.component';
-import { NotesComponent } from './notes/notes.component';
+import { CategoriesComponent } from './categories/categories.component';
 import { AuthService } from './services/auth.service';
 import { HelpComponent } from './help/help.component';
 import { NoteComponent } from './note/note.component';
-import { FolderComponent } from './folder/folder.component';
+import { CategoryComponent } from './category/category.component';
 
 
 const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: '/folders'
+    redirectTo: '/categories'
   },
   {
     path: 'login',
     component: LoginComponent
   },
   {
-    path: 'folders',
-    component: NotesComponent,
+    path: 'categories',
+    component: CategoriesComponent,
     canActivate: [AuthService]
   },
   {
-    path: 'folder',
-    component: FolderComponent
+    path: 'category',
+    component: CategoryComponent
   },
   {
-    path: 'folder/:folder',
-    component: FolderComponent
+    path: 'category/:category',
+    component: CategoryComponent
   },
   {
     path: 'note',
@@ -37,12 +37,12 @@ const routes: Routes = [
     canActivate: [AuthService]
   },
   {
-    path: 'note/:folder',
+    path: 'note/:category',
     component: NoteComponent,
     canActivate: [AuthService]
   },
   {
-    path: 'note/:folder/:fileName',
+    path: 'note/:category/:fileName',
     component: NoteComponent,
     canActivate: [AuthService]
   },
@@ -52,7 +52,7 @@ const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: '/folders'
+    redirectTo: '/categories'
   }
 ];
 

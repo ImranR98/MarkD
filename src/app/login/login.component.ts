@@ -20,7 +20,7 @@ export class LoginComponent implements OnInit {
   isFirstTime: boolean = true
 
   firstTimeCheck() {
-    if (this.authService.ifLoggedIn(false)) this.router.navigate(['/notes'])
+    if (this.authService.ifLoggedIn(false)) this.router.navigate(['/categories'])
     this.authService.ifPassword().then(res => {
       this.isFirstTime = res
     }).catch(err => this.errorService.showError(err, () => this.firstTimeCheck(), null))

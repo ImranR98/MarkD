@@ -1,13 +1,15 @@
 @import '~@angular/material/theming';
 @include mat-core();
 
-$app-placeholder: $mat-indigo; // Bugfix
-$app-primary: mat-palette($mat-indigo);
-$app-accent: mat-palette($mat-blue-gray);
-$app-warn: mat-palette($mat-red);
+$app-primary-light: mat-palette($mat-indigo, 500, 400, 900);
+$app-accent-light: mat-palette($mat-pink);
+$app-warn-light: mat-palette($mat-red);
+$app-primary-dark: mat-palette($mat-indigo, 800, 500, 900);
+$app-accent-dark: mat-palette($mat-pink);
+$app-warn-dark: mat-palette($mat-red);
 
-$app-theme-light: mat-light-theme($app-placeholder, $app-accent, $app-warn);
-$app-theme-dark: mat-dark-theme($app-primary, $app-accent, $app-warn);
+$app-theme-light: mat-light-theme($app-primary-light, $app-accent-light, $app-warn-light);
+$app-theme-dark: mat-dark-theme($app-primary-dark, $app-accent-dark, $app-warn-dark);
 
 @media (prefers-color-scheme: light) {
     @include angular-material-theme($app-theme-light);
@@ -16,10 +18,10 @@ $app-theme-dark: mat-dark-theme($app-primary, $app-accent, $app-warn);
       color: #000
     }
     .activeLink {
-        color: mat-color($app-accent, lighter)
+        color: mat-color($app-accent-light, lighter)
     }
     .warn {
-        color: mat-color($app-warn)
+        color: mat-color($app-warn-light)
     }
 }
 
@@ -30,13 +32,13 @@ $app-theme-dark: mat-dark-theme($app-primary, $app-accent, $app-warn);
       color: #FFF;
     }
     .activeLink {
-        color: mat-color($app-accent, lighter)
+        color: mat-color($app-accent-dark, lighter)
     }
     .archived {
         background-color: rgba(255, 255, 255, 0.05) !important;
     }
     .warn {
-        color: mat-color($app-warn)
+        color: mat-color($app-warn-dark)
     }
     mat-expansion-panel, mat-expansion-panel-header, mat-expansion-panel-body {
         background-color: rgba(40, 40, 40) !important;
@@ -84,7 +86,7 @@ a {
 
 .noteContainer {
     .note:hover {
-        background-color: rgba($color: mat-color($app-accent), $alpha: 0.1)
+        background-color: rgba($color: mat-color($app-accent-light), $alpha: 0.1)
     }
     border-style: solid;
     border-width: 1px;
