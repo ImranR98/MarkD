@@ -23,7 +23,7 @@ Files are shown on the main page and are categorized by subdirectory.
 
 ## Screenshots
 ### Categories Overview
-![Screenshot of Categories page](/screenshots/CategoriesOverview.png?raw=true "Categories Overview")
+![Screenshot of Categories page](/screenshots/Categories.png?raw=true "Categories Overview")
 ### Category
 ![Screenshot of Category page](/screenshots/Category.png?raw=true "Category")
 ### Responsive UI and dark mode
