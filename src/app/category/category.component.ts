@@ -124,6 +124,6 @@ export class CategoryComponent implements OnInit {
   }
 
   formatDate(date: Date) {
-    return date.toDateString() + ', ' + (date.getHours() > 12 || date.getHours() == 0 ? date.getHours() == 0 ? 12 : date.getHours() - 12 : date.getHours()) + ':' + (date.getMinutes() <= 9 ? '0' : '' + date.getMinutes()) + ' ' + (date.getHours() > 12 ? 'PM' : 'AM')
+    return date.toDateString() + ', ' + (date.getHours() > 12 || date.getHours() == 0 ? date.getHours() == 0 ? 12 : date.getHours() - 12 : date.getHours()) + (date.getMinutes() == 0 ? '' : date.getMinutes() <= 9 ? ':0' + date.getMinutes() : ':' + date.getMinutes()) + ' ' + (date.getHours() > 12 ? 'PM' : 'AM')
   }
 }
