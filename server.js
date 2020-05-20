@@ -51,29 +51,28 @@ checkIfAuthenticated = expressJwt({
     requestProperty: 'jwt'
 })
 
-// Returns { folder: string, notes: { fileName: string, modified: Date, created: Date }[] }[] for all notes/folders
-const getList = () => {
-    let contents = fs.readdirSync(notesDir)
-    let data = [{ folder: '', notes: contents.filter(item => item.toLowerCase().endsWith('.md')) }]
-    contents.filter(item => fs.statSync(`${notesDir}/${item}`).isDirectory()).forEach(folder => data.push({ folder: folder, notes: [] }))
-    data = data.map(folderAndNotes => {
-        if (folderAndNotes.folder) {
-            folderAndNotes.notes = fs.readdirSync(`${notesDir}/${folderAndNotes.folder}`).filter(item => item.toLowerCase().endsWith('.md'))
-        }
-        return folderAndNotes
-    })
-    data = data.map(folderAndNotes => {
-        folderAndNotes.notes = folderAndNotes.notes.map(note => {
-            let stats = fs.statSync(`${notesDir}/${folderAndNotes.folder}/${note}`)
-            return {
-                fileName: note,
-                modified: stats.mtime,
-                created: stats.ctime
+const getFolders = () => {
+    return [''].concat(fs.readdirSync(notesDir).filter(item => fs.statSync(`${notesDir}/${item}`).isDirectory()))
+}
+const getFolder = (folder) => {
+    let target = `${notesDir}${folder ? `/${folder}` : ''}`
+    if (fs.existsSync(target)) {
+        if (fs.statSync(target).isDirectory()) {
+            let data = {
+                folder: folder,
+                notes: fs.readdirSync(target).filter(fileName => fileName.toLowerCase().endsWith('.md')).map(fileName => {
+                    let stats = fs.statSync(`${target}/${fileName}`)
+                    return {
+                        fileName: fileName,
+                        modified: stats.mtime,
+                        created: stats.ctime
+                    }
+                })
             }
-        })
-        return folderAndNotes
-    })
-    return data
+            return data
+        }
+    }
+    throw null
 }
 const getNote = (folder, fileName) => {
     let stats = fs.statSync(`${notesDir}/${folder ? folder + '/' : ''}${fileName}`)
@@ -135,10 +134,10 @@ const setPassword = (password) => {
 // Authenticate against the saved password (return a valid JWT if successful)
 app.post('/auth', (req, res) => {
     try {
-        if (!req.body.password) res.status(400).send()
+        if (!req.body.password) res.sendStatus(400).send()
         else {
             let password = getPassword()
-            if (!password) res.status(500).send()
+            if (!password) res.sendStatus(500).send()
             else {
                 if (bcrypt.compareSync(req.body.password, password)) {
                     res.json({
@@ -148,28 +147,28 @@ app.post('/auth', (req, res) => {
                         })
                     })
                 } else {
-                    res.status(401).send()
+                    res.sendStatus(401).send()
                 }
             }
         }
     } catch (err) {
         console.log(err)
-        res.status(500).send()
+        res.sendStatus(500).send()
     }
 })
 
 // Create a new password (only works if one doesn't exist - meant for first time ugetPassword()se)
 app.post('/createPassword', (req, res) => {
     try {
-        if (!req.body.password) res.status(400).send()
-        else if (getPassword()) res.status(500).send()
+        if (!req.body.password) res.sendStatus(400).send()
+        else if (getPassword()) res.sendStatus(500).send()
         else {
             setPassword(bcrypt.hashSync(req.body.password, 10))
             res.send()
         }
     } catch (err) {
         console.log(err)
-        res.status(500).send()
+        res.sendStatus(500).send()
     }
 })
 
@@ -179,118 +178,126 @@ app.get('/ifPassword', (req, res) => {
         res.send(!getPassword())
     } catch (err) {
         console.log(err)
-        res.status(500).send()
+        res.sendStatus(500).send()
     }
 })
 
 // Change the password (needs the current password to work)
-app.post('/changePassword', /*checkIfAuthenticated,*/(req, res) => {
+app.post('/changePassword', checkIfAuthenticated, (req, res) => {
     try {
-        if (!req.body.password) res.status(400).send()
+        if (!req.body.password) res.sendStatus(400).send()
         else {
             setPassword(bcrypt.hashSync(req.body.password, 10))
             res.send()
         }
     } catch (err) {
         console.log(err)
-        res.status(500).send()
+        res.sendStatus(500).send()
     }
 })
 
-app.get('/list', /*checkIfAuthenticated,*/(req, res) => {
+app.get('/folders', checkIfAuthenticated, (req, res) => {
     try {
-        res.send(getList())
+        res.send(getFolders())
     } catch (err) {
         console.log(err)
-        res.status(500).send(err)
+        res.sendStatus(500).send(err)
     }
 })
-app.post('/note/get', /*checkIfAuthenticated,*/(req, res) => {
-    if (!req.body.fileName) res.status(400).send()
+app.post('/note/get', checkIfAuthenticated, (req, res) => {
+    if (!req.body.fileName) res.sendStatus(400).send()
     else {
         try {
             res.send(getNote(req.body.folder, req.body.fileName))
         } catch (err) {
             console.log(err)
-            res.status(500).send(err)
+            res.sendStatus(500).send(err)
         }
     }
 })
-app.post('/note/save', /*checkIfAuthenticated,*/(req, res) => {
-    if (!req.body.fileName) res.status(400).send()
+app.post('/note/save', checkIfAuthenticated, (req, res) => {
+    if (!req.body.fileName) res.sendStatus(400).send()
     else {
         try {
             res.send(saveNote(req.body.folder, req.body.fileName, req.body.data))
         } catch (err) {
             console.log(err)
-            res.status(500).send(err)
+            res.sendStatus(500).send(err)
         }
     }
 })
-app.post('/note/delete', /*checkIfAuthenticated,*/(req, res) => {
-    if (!req.body.fileName) res.status(400).send()
+app.post('/note/delete', checkIfAuthenticated, (req, res) => {
+    if (!req.body.fileName) res.sendStatus(400).send()
     else {
         try {
             res.send(deleteNote(req.body.folder, req.body.fileName))
         } catch (err) {
             console.log(err)
-            res.status(500).send(err)
+            res.sendStatus(500).send(err)
         }
     }
 })
-app.post('/note/move', /*checkIfAuthenticated,*/(req, res) => {
-    if (!req.body.fileName) res.status(400).send()
+app.post('/note/move', checkIfAuthenticated, (req, res) => {
+    if (!req.body.fileName) res.sendStatus(400).send()
     else {
         try {
             res.send(moveNote(req.body.folder, req.body.fileName, req.body.toFolder))
         } catch (err) {
             console.log(err)
-            res.status(500).send(err)
+            res.sendStatus(500).send(err)
         }
     }
 })
-app.post('/note/rename', /*checkIfAuthenticated,*/(req, res) => {
-    if (!req.body.fileName) res.status(400).send()
+app.post('/note/rename', checkIfAuthenticated, (req, res) => {
+    if (!req.body.fileName) res.sendStatus(400).send()
     else {
         try {
             res.send(renameNote(req.body.folder, req.body.fileName, req.body.newName))
         } catch (err) {
             console.log(err)
-            res.status(500).send(err)
+            res.sendStatus(500).send(err)
         }
     }
 })
-app.post('/folder/create', /*checkIfAuthenticated,*/(req, res) => {
-    if (!req.body.folder) res.status(400).send
+app.post('/folder/get', checkIfAuthenticated, (req, res) => {
+    try {
+        res.send({ folder: getFolder(req.body.folder), folders: getFolders() })
+    } catch (err) {
+        console.log(err)
+        res.sendStatus(500).send(err)
+    }
+})
+app.post('/folder/create', checkIfAuthenticated, (req, res) => {
+    if (!req.body.folder) res.sendStatus(400).send
     else {
         try {
             res.send(createFolder(req.body.folder))
         } catch (err) {
             console.log(err)
-            res.status(500).send(err)
+            res.sendStatus(500).send(err)
         }
     }
 })
 
-app.post('/folder/delete', /*checkIfAuthenticated,*/(req, res) => {
-    if (!req.body.folder) res.status(400).send
+app.post('/folder/delete', checkIfAuthenticated, (req, res) => {
+    if (!req.body.folder) res.sendStatus(400).send
     else {
         try {
             res.send(deleteFolder(req.body.folder))
         } catch (err) {
             console.log(err)
-            res.status(500).send(err)
+            res.sendStatus(500).send(err)
         }
     }
 })
-app.post('/folder/rename', /*checkIfAuthenticated,*/(req, res) => {
-    if (!req.body.folder || !req.body.newFolder) res.status(400).send()
+app.post('/folder/rename', checkIfAuthenticated, (req, res) => {
+    if (!req.body.folder || !req.body.newFolder) res.sendStatus(400).send()
     else {
         try {
             res.send(renameFolder(req.body.folder, req.body.newFolder))
         } catch (err) {
             console.log(err)
-            res.status(500).send(err)
+            res.sendStatus(500).send(err)
         }
     }
 })

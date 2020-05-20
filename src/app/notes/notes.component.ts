@@ -14,18 +14,18 @@ export class NotesComponent implements OnInit {
   constructor(private notesService: NotesService, private errorService: ErrorService) { }
 
   processing: boolean = false
-  list$: BehaviorSubject<FolderInfo[]> = new BehaviorSubject(null)
+  folders$: BehaviorSubject<string[]> = new BehaviorSubject(null)
 
-  list: FolderInfo[] = null
+  folders: string[] = null
 
   currentlyOpen = null
 
-  getNotes() {
-    this.notesService.list().then((list: FolderInfo[]) => {
-      this.list$.next(list)
+  getFolders() {
+    this.notesService.getFolders().then((folders: string[]) => {
+      this.folders$.next(folders)
     }).catch(err => {
-      this.list$.next(null)
-      this.errorService.showError(err, () => this.getNotes(), null)
+      this.folders$.next(null)
+      this.errorService.showError(err, () => this.getFolders(), null)
     })
   }
 
@@ -43,15 +43,12 @@ export class NotesComponent implements OnInit {
       newFolder = prompt('Enter Folder Name')
     }
     let exists = false
-    this.list.forEach(folder => folder.folder.trim() == newFolder.trim() ? exists = true : null)
+    this.folders.forEach(folder => folder.trim() == newFolder.trim() ? exists = true : null)
     if (exists) {
       this.errorService.showError(`${newFolder.trim()} already exists`)
     } else {
       this.notesService.createFolder(newFolder).then(() => {
-        this.list.push({
-          folder: newFolder,
-          notes: []
-        })
+        this.folders.push(newFolder)
       }).catch(err => {
         this.errorService.showError(err, () => this.addFolder(newFolder))
       })
@@ -68,7 +65,7 @@ export class NotesComponent implements OnInit {
 
   deleteFolder(folder: string) {
     this.notesService.deleteFolder(folder).then(() => {
-      this.list = this.list.filter(lFolder => lFolder.folder != folder)
+      this.folders = this.folders.filter(lFolder => lFolder != folder)
     }).catch(err => this.errorService.showError(err, () => this.deleteFolder(folder)))
   }
 
@@ -76,8 +73,8 @@ export class NotesComponent implements OnInit {
     let newName = prompt('Enter new name')
     if (newName) {
       this.notesService.renameFolder(folder, newName).then(() => {
-        this.list = this.list.map(lFolder => {
-          if (lFolder.folder == folder) lFolder.folder = newName
+        this.folders = this.folders.map(lFolder => {
+          if (lFolder == folder) lFolder = newName
           return lFolder
         })
       }).catch(err => this.errorService.showError(err, () => this.renameFolder(folder)))
@@ -86,10 +83,10 @@ export class NotesComponent implements OnInit {
 
   ngOnInit(): void {
     this.currentlyOpen = localStorage.getItem('openFolder')
-    this.list$.subscribe(list => {
-      this.list = list
+    this.folders$.subscribe(list => {
+      this.folders = list
     })
-    this.getNotes()
+    this.getFolders()
   }
 
 }

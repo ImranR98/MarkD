@@ -1,24 +1,14 @@
-<div *ngIf="list; else loading" fxLayout="column" fxLayoutGap="1em" class="stdMargin">
+<div *ngIf="folders; else loading" fxLayout="column" fxLayoutGap="1em" class="stdMargin">
     <div fxLayout="row" fxLayoutAlign="end" fxFlex="100%">
-        <button mat-button style="overflow: hidden;" (click)="addFolder()" aria-label="Add Folder"
-            color="primary">
+        <button mat-button style="overflow: hidden;" (click)="addFolder()" aria-label="Add Folder" color="primary">
             + Add Folder
         </button>
     </div>
-    <mat-accordion>
-        <mat-expansion-panel *ngFor="let folder of list; let fIndex = index" [expanded]="folder.folder === currentlyOpen"
-            (opened)="openedFolder(folder.folder)" (closed)="closedFolder(folder.folder)">
-            <mat-expansion-panel-header>
-                <mat-panel-title>
-                    {{folder.folder ? folder.folder : '/'}}
-                </mat-panel-title>
-                <mat-panel-description>
-                    {{folder.notes.length == 0 ? 'No Files' : folder.notes.length == 1 ? '1 File' : folder.notes.length + ' Files'}}
-                </mat-panel-description>
-            </mat-expansion-panel-header>
-            <app-folder [fIndex]="fIndex" [list]="list" (noteMover)="moveNote($event)" (delete)="deleteFolder($event)" (rename)="renameFolder($event)"></app-folder>
-        </mat-expansion-panel>
-    </mat-accordion>
+    <div fxLayout="row wrap" fxLayoutGap="1em">
+        <div *ngFor="let folder of folders$.value" class="stdMarginBottom">
+            <button mat-button routerLink="/folder/{{folder}}">{{folder ? folder : '/'}}</button>
+        </div>
+    </div>
 </div>
 
 <ng-template #loading>

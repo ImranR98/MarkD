@@ -5,22 +5,31 @@ import { NotesComponent } from './notes/notes.component';
 import { AuthService } from './services/auth.service';
 import { HelpComponent } from './help/help.component';
 import { NoteComponent } from './note/note.component';
+import { FolderComponent } from './folder/folder.component';
 
 
 const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: '/notes'
+    redirectTo: '/folders'
   },
   {
     path: 'login',
     component: LoginComponent
   },
   {
-    path: 'notes',
+    path: 'folders',
     component: NotesComponent,
     canActivate: [AuthService]
+  },
+  {
+    path: 'folder',
+    component: FolderComponent
+  },
+  {
+    path: 'folder/:folder',
+    component: FolderComponent
   },
   {
     path: 'note',
@@ -43,7 +52,7 @@ const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: '/notes'
+    redirectTo: '/folders'
   }
 ];
 

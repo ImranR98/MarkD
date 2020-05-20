@@ -14,17 +14,8 @@ export class NotesService {
     withCredentials: true // Make sure JWT header is sent
   }
 
-  list = async (): Promise<FolderInfo[]> => {
-    let folders = await this.http.get(environment.apiUrl + '/list', this.httpOptions).toPromise() as FolderInfo[]
-    folders = folders.map(folder => {
-      folder.notes = folder.notes.map(note => {
-        typeof note.created == 'string' ? note.created = new Date(note.created) : null
-        typeof note.modified == 'string' ? note.modified = new Date(note.modified) : null
-        return note
-      })
-      return folder
-    })
-    return folders
+  getFolders = async (): Promise<string[]> => {
+    return await this.http.get(environment.apiUrl + '/folders', this.httpOptions).toPromise() as string[]
   }
 
   getNote = async (folder: string, fileName: string): Promise<Note> => {
@@ -32,6 +23,16 @@ export class NotesService {
     typeof note.info.created == 'string' ? note.info.created = new Date(note.info.created) : null
     typeof note.info.modified == 'string' ? note.info.modified = new Date(note.info.modified) : null
     return note
+  }
+
+  getFolder = async (folder: string): Promise<{ folder: FolderInfo, folders: string[] }> => {
+    let folderObj = await this.http.post(environment.apiUrl + `/folder/get`, { folder }, this.httpOptions).toPromise() as { folder: FolderInfo, folders: string[] }
+    folderObj.folder.notes = folderObj.folder.notes.map(note => {
+      typeof note.created == 'string' ? note.created = new Date(note.created) : null
+      typeof note.modified == 'string' ? note.modified = new Date(note.modified) : null
+      return note
+    })
+    return folderObj
   }
 
   saveNote = async (fileName: string, folder: string, data: string) => {
