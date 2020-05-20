@@ -1,4 +1,4 @@
-<div fxLayout="column" fxLayoutGap="1em" class="stdMargin">
+<div fxLayout="column" class="stdMargin" *ngIf="!loading">
     <div fxLayout="column" fxLayoutGap="0.3em">
         <h1 *ngIf="isFirstTime">Set up a password</h1>
         <h1 *ngIf="!isFirstTime">Enter Password</h1>
@@ -11,4 +11,7 @@
         </mat-form-field>
         <button mat-raised-button color="primary" type="submit">Send</button>
     </form>
+</div>
+<div *ngIf="loading">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </div>

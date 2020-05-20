@@ -18,12 +18,18 @@ export class LoginComponent implements OnInit {
   })
 
   isFirstTime: boolean = true
+  loading: boolean = false
 
   firstTimeCheck() {
     if (this.authService.ifLoggedIn(false)) this.router.navigate(['/categories'])
+    this.loading = true
     this.authService.ifPassword().then(res => {
       this.isFirstTime = res
-    }).catch(err => this.errorService.showError(err, () => this.firstTimeCheck(), null))
+      this.loading = false
+    }).catch(err => {
+      this.loading = false
+      this.errorService.showError(err, () => this.firstTimeCheck(), null)
+    })
   }
 
   ngOnInit(): void {

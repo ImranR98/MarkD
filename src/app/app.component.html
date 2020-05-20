@@ -9,6 +9,9 @@
             <button mat-icon-button routerLink="/help" routerLinkActive="activeLink" style="overflow: hidden;" aria-label="Help" matTooltip="Help" [matTooltipShowDelay]="1500">
                 <mat-icon>help_outline</mat-icon>
             </button>
+            <button mat-icon-button *ngIf="authService.isLoggedIn | async" (click)="logout()" style="overflow: hidden;" aria-label="Logout" matTooltip="Logout" [matTooltipShowDelay]="1500">
+                <mat-icon>exit_to_app</mat-icon>
+            </button>
         </div>
     </mat-toolbar>
     <div fxFlex="100%">

@@ -25,7 +25,6 @@ export class CategoriesComponent implements OnInit, OnDestroy {
     xs: 1
   }
 
-  processing: boolean = false
   categories$: BehaviorSubject<{ category: string, categories: string[] }[]> = new BehaviorSubject(null)
 
   categories: { category: string, categories: string[] }[] = null

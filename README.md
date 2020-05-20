@@ -20,3 +20,11 @@ After entering your password in the UI on first run, it can be reset by manually
 
 ## Help
 Files are shown on the main page and are categorized by subdirectory.
+
+## Screenshots
+### Categories Overview
+![Screenshot of Categories page](/screenshots/CategoriesOverview.png?raw=true "Categories Overview")
+### Category
+![Screenshot of Category page](/screenshots/Category.png?raw=true "Category")
+### Responsive UI and dark mode
+![Screenshot of Responsive UI and dark mode](/screenshots/ResponsiveDark.png?raw=true "Responsive UI and dark mode")

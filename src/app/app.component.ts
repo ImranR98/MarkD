@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -7,5 +8,10 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'MarkD';
-  test = '# Hello Markdown\n```csharp\npublic class Foo {}\n```'
+
+  constructor(public authService: AuthService) { }
+
+  logout() {
+    this.authService.logout(true)
+  }
 }
