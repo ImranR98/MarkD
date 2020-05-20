@@ -1,0 +1,35 @@
+<div fxLayout="column" class="stdMargin">
+    <div fxLayout="row" fxLayoutAlign="space-between start">
+        <div fxLayout="row" fxLayoutGap="1em" fxLayoutAlign="default center">
+            <mat-form-field>
+                <input matInput (ngModelChange)="somethingChanged($event)" [(ngModel)]="board.title"
+                    placeholder="Board Title" type="text" class="hideInput bold large">
+            </mat-form-field>
+            <mat-menu #boardOptions="matMenu">
+                <button mat-menu-item class="warn" (click)="deleteThis()">Delete Board</button>
+                <button mat-menu-item (click)="archiveThis()">{{board.archived ? 'Unarchive' : 'Archive'}}
+                    Board</button>
+            </mat-menu>
+            <button mat-icon-button aria-label="Board Options" [matMenuTriggerFor]="boardOptions"
+                style="overflow: hidden;" aria-label="Options" matTooltip="Board Options" [matTooltipShowDelay]="1500">
+                <mat-icon>more_horiz</mat-icon>
+            </button>
+        </div>
+        <button mat-icon-button (click)="toggleBoardsFn()" style="overflow: hidden;" aria-label="Toggle Board View" matTooltip="Toggle Board View" [matTooltipShowDelay]="1500">
+            <mat-icon>menu_open</mat-icon>
+        </button>
+    </div>
+    <div fxLayout="row wrap" fxLayout.lt-sm="column" fxLayoutAlign="start start" fxLayoutAlign.lt-sm="center"
+        fxLayoutGap="1em" cdkDropListGroup>
+        <app-stack *ngFor="let stack of board.stacks; let stackIndex = index;" [stack]="stack"
+            [canMoveUp]="stackIndex > 0" [canMoveDown]="stackIndex < board.stacks.length - 1"
+            [showArchived]="showArchived.checked" (change)="somethingChanged($event)" (delete)="deleteStack(stackIndex)"
+            (up)="moveStackUp(stackIndex)" (down)="moveStackDown(stackIndex)"></app-stack>
+    </div>
+</div>
+<div fxLayout="row" fxLayoutAlign="space-between center" class="stdMargin">
+    <mat-checkbox #showArchived class="stdMargin">Show Archived</mat-checkbox>
+    <button mat-button color="primary" aria-label="Add Stack" (click)="addStack()">
+        + Stack
+    </button>
+</div>

@@ -1,0 +1,55 @@
+<div class="sidenavDiv height100">
+    <mat-sidenav-container>
+        <mat-sidenav #sidenav [mode]="mobileQuery.matches ? 'over' : 'side'" position="end"
+            [fixedInViewport]="mobileQuery.matches">
+            <mat-list fxLayout="column" fxLayoutAlign="space-between" fxLayoutGap="1em" class="height100">
+                <div fxLayout="column" fxLayoutAlign="center" cdkDropList [cdkDropListData]="boards"
+                    (cdkDropListDropped)="drop($event)">
+                    <span mat-list-item style="height: 0;"></span>
+                    <div mat-list-item *ngFor="let board of boards; let boardIndex = index;" cdkDrag
+                        [class.active]="boardIndex == activeBoardIndex" [class.archived]="board.archived">
+                        <div *ngIf="!board.archived || showArchivedBoards.checked" fxLayout="row"
+                            fxLayoutAlign="space-between center" fxLayoutGap="1em" class="stdMarginHorizontal"
+                            (click)="activeBoardIndex = boardIndex; mobileQuery.matches ? sidenav.close() : null;">
+                            <div fxLayout="column" class="stdMargin">
+                                <a class="hiddenLink" fxLayout="row" fxLayoutAlign="center center"
+                                    style="overflow: auto;">
+                                    {{board.title}}<i *ngIf="!board.title">No Title</i>
+                                </a>
+                                <small *ngIf="board.archived">Archived</small>
+                            </div>
+                            <button mat-icon-button cdkDragHandle style="overflow: hidden;" aria-label="Drag"
+                                matTooltip="Drag Board" [matTooltipShowDelay]="1500">
+                                <mat-icon>drag_handle</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                    <div mat-list-item fxLayout="column">
+                        <button mat-button color="primary" aria-label="Add Board" (click)="addBoard()">
+                            + Board
+                        </button>
+                    </div>
+                </div>
+                <mat-checkbox #showArchivedBoards class="stdMargin">Show Archived Boards</mat-checkbox>
+            </mat-list>
+        </mat-sidenav>
+        <mat-sidenav-content>
+            <app-board *ngFor="let board of boards; let boardIndex = index;"
+                [class.hide]="boardIndex != activeBoardIndex" [board]="board" (change)="somethingChanged($event)"
+                (delete)="deleteBoard(boardIndex)" (toggleBoards)="sidenav.toggle()">
+            </app-board>
+            <div fxLayout="row" fxLayoutAlign="end center" class="stdMargin"
+                *ngIf="activeBoardIndex == null || boards.length == 0" fxLayoutGap="1em">
+                <strong *ngIf="!loading">Start by adding a board here</strong>
+                <button mat-icon-button (click)="sidenav.toggle()" style="overflow: hidden;"
+                    aria-label="Toggle Board View" matTooltip="Toggle Board View" [matTooltipShowDelay]="1500">
+                    <mat-icon>menu_open</mat-icon>
+                </button>
+            </div>
+            <div fxLayout="column" style="position: fixed; bottom: 0; left: 0; right: 0;">
+                <mat-progress-bar *ngIf="moreChanges" mode="indeterminate" color="accent"> </mat-progress-bar>
+                <mat-progress-bar *ngIf="loading || saving" mode="indeterminate" color="primary"> </mat-progress-bar>
+            </div>
+        </mat-sidenav-content>
+    </mat-sidenav-container>
+</div>

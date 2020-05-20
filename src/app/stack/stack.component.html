@@ -1,0 +1,53 @@
+<div fxLayout="column" fxLayoutGap="1em" cdkDropList [cdkDropListData]="stack.items" (cdkDropListDropped)="drop($event)"
+    class="stdMarginBottom stack" [class.hide]="stack.archived && !showArchived" [class.archived]="stack.archived">
+    <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="1em">
+        <div fxFlex="100%">
+            <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="1em">
+                <mat-form-field fxFlex="70%">
+                    <input matInput (ngModelChange)="somethingChanged($event)" [(ngModel)]="stack.title"
+                        placeholder="Stack Title" type="text" class="hideInput bold">
+                </mat-form-field>
+                <mat-menu #stackOptions="matMenu">
+                    <button mat-menu-item *ngIf="canMoveUp" (click)="moveUp()">Move <span fxShow
+                            fxHide.lt-sm>left</span><span fxHide fxShow.lt-sm>up</span></button>
+                    <button mat-menu-item *ngIf="canMoveDown" (click)="moveDown()">Move
+                        <span fxShow fxHide.lt-sm>right</span><span fxHide fxShow.lt-sm>down</span></button>
+                    <button mat-menu-item class="warn" (click)="deleteThis()">Delete
+                        Stack</button>
+                </mat-menu>
+                <button mat-icon-button (click)="archiveThis()" style="overflow: hidden;"
+                    aria-label="Archive/Unarchive Stack" matTooltip="Archive/Unarchive Stack"
+                    [matTooltipShowDelay]="1500">
+                    <mat-icon *ngIf="!stack.archived">archive_outline</mat-icon>
+                    <mat-icon *ngIf="stack.archived">unarchive_outline</mat-icon>
+                </button>
+            </div>
+        </div>
+        <button mat-icon-button aria-label="Stack Options" [matMenuTriggerFor]="stackOptions" style="overflow: hidden;"
+            aria-label="Options" matTooltip="Stack Options" [matTooltipShowDelay]="1500">
+            <mat-icon>more_horiz</mat-icon>
+        </button>
+    </div>
+    <div fxLayout="column">
+        <div *ngFor="let item of stack.items; let itemIndex = index;" cdkDrag [class.archived]="item.archived">
+            <div fxLayout="column" fxLayoutGap="1em" *ngIf="!item.archived || showArchived" class="stdMarginBottom">
+                <mat-divider></mat-divider>
+                <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="1em">
+                    <app-item [item]="item" (change)="somethingChanged($event)" (delete)="deleteItem(itemIndex)"
+                        fxFlex="100%"></app-item>
+                    <button mat-icon-button cdkDragHandle style="overflow: hidden;" aria-label="Drag"
+                        matTooltip="Drag Item" [matTooltipShowDelay]="1500">
+                        <mat-icon>drag_handle</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <mat-divider></mat-divider>
+    <div fxLayout="row" fxLayoutAlign="space-between center">
+        <small>{{stack.archived ? 'Archived' : ''}}</small>
+        <button mat-button color="primary" aria-label="Add Item" (click)="addItem()">
+            + Item
+        </button>
+    </div>
+</div>

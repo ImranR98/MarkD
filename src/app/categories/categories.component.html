@@ -9,7 +9,7 @@
         style="overflow: auto; min-height:max-content;" [class.hide]="!categories">
         <mat-grid-tile matRipple role="listitem" *ngFor="let category of categories" fxLayout="column"
             class="noteContainer">
-            <div [routerLink]="['/category', category.category]" fxLayout="column" fxLayoutAlign="space-between"
+            <div [routerLink]="['/notes/category', category.category]" fxLayout="column" fxLayoutAlign="space-between"
                 fxLayoutGap="1em" class="note">
                 <div fxLayout="column">
                     <span class="stdMarginBottom"

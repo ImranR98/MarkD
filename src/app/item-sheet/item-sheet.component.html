@@ -1,0 +1,36 @@
+<div *ngIf="data.item" class="stdMarginTop" fxLayout="column">
+    <div fxLayout="row" fxLayoutGap="1em" fxLayoutAlign="space-between center">
+        <mat-form-field>
+            <input matInput [(ngModel)]="data.item.title" placeholder="Item Title" type="text"
+                (ngModelChange)="somethingChanged($event)">
+        </mat-form-field>
+        <div fxLayout="row" fxLayoutGap="1em">
+            <button mat-icon-button (click)="archiveThis()" [disabled]="!data.item.title" style="overflow: hidden;"
+                aria-label="Archive/Unarchive" matTooltip="Archive/Unarchive Item" [matTooltipShowDelay]="1500">
+                <mat-icon *ngIf="!data.item.archived">archive_outline</mat-icon>
+                <mat-icon *ngIf="data.item.archived">unarchive_outline</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="deleteThis()" style="overflow: hidden;" aria-label="Delete"
+                matTooltip="Delete Item" [matTooltipShowDelay]="1500">
+                <mat-icon>delete_outline</mat-icon>
+            </button>
+        </div>
+    </div>
+    <mat-form-field>
+        <mat-label>Description</mat-label>
+        <textarea matInput [(ngModel)]="data.item.description" placeholder="Item Description" type="text"
+            [disabled]="!data.item.title" (ngModelChange)="somethingChanged($event)" cdkTextareaAutosize
+            cdkAutosizeMinRows="5" cdkAutosizeMaxRows="13"></textarea>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Due Date</mat-label>
+        <input matInput [matDatepicker]="picker" [(ngModel)]="data.item.due" [disabled]="!data.item.title"
+            (ngModelChange)="somethingChanged($event)">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    <span>Created:
+        {{formatDate(data.item.created)}}</span>
+    <span>Modified:
+        {{formatDate(data.item.modified)}}</span>
+</div>

@@ -6,43 +6,49 @@ import { AuthService } from './services/auth.service';
 import { HelpComponent } from './help/help.component';
 import { NoteComponent } from './note/note.component';
 import { CategoryComponent } from './category/category.component';
+import { BoardsComponent } from './boards/boards.component';
 
 
 const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: '/categories'
+    redirectTo: '/deck'
   },
   {
     path: 'login',
     component: LoginComponent
   },
   {
-    path: 'categories',
+    path: 'deck',
+    component: BoardsComponent,
+    canActivate: [AuthService]
+  },
+  {
+    path: 'notes',
     component: CategoriesComponent,
     canActivate: [AuthService]
   },
   {
-    path: 'category',
+    path: 'notes/category',
     component: CategoryComponent
   },
   {
-    path: 'category/:category',
+    path: 'notes/category/:category',
     component: CategoryComponent
   },
   {
-    path: 'note',
+    path: 'notes/note',
     component: NoteComponent,
     canActivate: [AuthService]
   },
   {
-    path: 'note/:category',
+    path: 'notes/note/:category',
     component: NoteComponent,
     canActivate: [AuthService]
   },
   {
-    path: 'note/:category/:fileName',
+    path: 'notes/note/:category/:fileName',
     component: NoteComponent,
     canActivate: [AuthService]
   },
@@ -52,7 +58,7 @@ const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: '/categories'
+    redirectTo: '/deck'
   }
 ];
 

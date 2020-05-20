@@ -23,6 +23,16 @@ $app-theme-dark: mat-dark-theme($app-primary-dark, $app-accent-dark, $app-warn-d
     .warn {
         color: mat-color($app-warn-light)
     }
+    .active {
+        color: mat-color($app-accent-light, darker) !important;
+        background-color: mat-color($app-accent-light, default, 0.1) !important;
+    }
+    .archived {
+        background-color: rgba(0, 0, 0, 0.05) !important;
+    }
+    mat-sidenav-container, mat-sidenav {
+        background-color: rgb(255, 255, 255) !important;
+    }
 }
 
 @media (prefers-color-scheme: dark) {
@@ -43,12 +53,30 @@ $app-theme-dark: mat-dark-theme($app-primary-dark, $app-accent-dark, $app-warn-d
     mat-expansion-panel, mat-expansion-panel-header, mat-expansion-panel-body {
         background-color: rgba(40, 40, 40) !important;
     }
+    .active {
+        color: mat-color($app-accent-dark, lighter) !important;
+        background-color: mat-color($app-accent-dark, default, 0.1) !important;
+    }
+    .archived {
+        background-color: rgba(255, 255, 255, 0.05) !important;
+    }
+    mat-sidenav-container, mat-sidenav {
+        background-color: rgb(25, 25, 25) !important;
+    }
 }
 
 /* You can add global styles to this file, and also import other style files */
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+mat-sidenav-container {
+    height: 100%;
+}
+  
+mat-sidenav {
+    width: 15em;
+}
 
 .stdMargin {
     margin: 1em;
@@ -67,13 +95,50 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     margin-bottom: 1em;
 }
 
+.hideInput {
+    border: none;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.large {
+    font-size: large;
+}
+
 .hiddenLink {
     text-decoration: none;
     color: inherit;
 }
 
+.cdk-drop-list-dragging .cdk-drag {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+  
+.cdk-drag-animating {
+    transition: transform 300ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.stack {
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 2px;
+    padding: 1em;
+    border-color: gray;
+}
+
 .hide {
     display: none !important;
+}
+
+.sidenavDiv {
+    display: flex;
+    flex-direction: column;
+}
+
+mat-sidenav-container {
+    flex: 1 0 auto;
 }
 
 .height100 {

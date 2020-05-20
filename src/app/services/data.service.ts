@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { NoteInfo, Note, CategoryInfo } from '../types';
+import { Board, Note, CategoryInfo } from '../types';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +12,14 @@ export class DataService {
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
     withCredentials: true // Make sure JWT header is sent
+  }
+
+  getBoards = async (): Promise<any> => {
+    return await this.http.get(environment.apiUrl + '/boards', this.httpOptions).toPromise()
+  }
+
+  setBoards = async (boards: Board[]) => {
+    return await this.http.post(environment.apiUrl + '/boards', { boards }, this.httpOptions).toPromise()
   }
 
   getCategories = async (): Promise<{ category: string, categories: string[] }[]> => {

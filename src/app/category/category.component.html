@@ -1,7 +1,7 @@
 <div class="stdMargin" *ngIf="category$.value">
     <div fxLayout="row" fxLayoutGap="1em" fxLayoutAlign="space-between start">
         <h1>{{category$.value.category ? category$.value.category : 'Uncategorized'}}</h1>
-        <button mat-icon-button style="overflow: hidden;" routerLink="/note/{{category$.value.category}}"
+        <button mat-icon-button style="overflow: hidden;" routerLink="/notes/note/{{category$.value.category}}"
             aria-label="Add Note" color="primary" matTooltip="Add Note" [matTooltipShowDelay]="1500">
             <mat-icon>add</mat-icon>
         </button>
@@ -34,7 +34,7 @@
                             (click)="moveNote(category$.value.category, category.category, note.fileName)">{{category.category ? category.category : 'Uncategorized'}}</button>
                     </div>
                 </mat-menu>
-                <div [routerLink]="['/note', category$.value.category ? category$.value.category : '/', note.fileName]"
+                <div [routerLink]="['/notes/note', category$.value.category ? category$.value.category : '/', note.fileName]"
                     fxLayout="column" fxLayoutAlign="space-between" fxLayoutGap="1em" class="note">
                     <div fxLayout="column">
                         <span class="stdMarginBottom" class="textOverflow">{{note.fileName}}</span>

@@ -12,6 +12,7 @@ require('dotenv').config({ path: __dirname + '/.env' })
 const userDataDir = `${__dirname}/userData`
 const passwordPath = `${userDataDir}/password.txt`
 const notesDir = `${__dirname}/userData/Notes`
+const boardsPath = `${userDataDir}/boards.json`
 if (!fs.existsSync(userDataDir)) fs.mkdirSync(userDataDir)
 else if (!fs.statSync(userDataDir).isDirectory()) fs.mkdirSync(userDataDir)
 if (!fs.existsSync(notesDir)) fs.mkdirSync(notesDir)
@@ -51,6 +52,21 @@ checkIfAuthenticated = expressJwt({
     requestProperty: 'jwt'
 })
 
+const getBoards = () => {
+	let boards = []
+	if (fs.existsSync(boardsPath)) {
+		try {
+			boards = JSON.parse(fs.readFileSync(boardsPath).toString())
+		} catch (err) {
+			console.log(err)
+			fs.unlinkSync(boardsPath)
+		}
+	}
+	return boards
+}
+const saveBoards = (boards) => {
+	fs.writeFileSync(boardsPath, JSON.stringify(boards, null, '\t'))
+}
 const getCategories = () => {
     return [''].concat(fs.readdirSync(notesDir).filter(file => fs.statSync(`${notesDir}/${file}`).isDirectory())).map(category => {
         return {
@@ -201,6 +217,26 @@ app.post('/changePassword', checkIfAuthenticated, (req, res) => {
     }
 })
 
+app.get('/boards', checkIfAuthenticated, (req, res) => {
+	try {
+		res.send(getBoards())
+	} catch (err) {
+		console.log(err)
+		res.status(500).send(err)
+	}
+})
+app.post('/boards', checkIfAuthenticated, (req, res) => {
+	if (req.body.boards) {
+		try {
+			res.send(saveBoards(req.body.boards))
+		} catch (err) {
+			console.log(err)
+			res.status(500).send(err)
+		}
+	} else {
+		res.status(400).send()
+	}
+})
 app.get('/categories', checkIfAuthenticated, (req, res) => {
     try {
         res.send(getCategories())

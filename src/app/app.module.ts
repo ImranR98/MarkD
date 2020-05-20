@@ -29,6 +29,19 @@ import { MatSelectModule } from '@angular/material/select'
 import { MatGridListModule } from '@angular/material/grid-list'
 import { MatRippleModule } from '@angular/material/core'
 import { MatMenuModule } from '@angular/material/menu'
+import { ItemComponent } from './item/item.component'
+import { ItemSheetComponent } from './item-sheet/item-sheet.component'
+import { StackComponent } from './stack/stack.component'
+import { BoardComponent } from './board/board.component'
+import { BoardsComponent } from './boards/boards.component'
+import { DragDropModule } from '@angular/cdk/drag-drop'
+import { MatCardModule } from '@angular/material/card'
+import { MatSidenavModule } from '@angular/material/sidenav'
+import { MatListModule } from '@angular/material/list'
+import { MatBottomSheetModule } from '@angular/material/bottom-sheet'
+import { MatDatepickerModule } from '@angular/material/datepicker'
+import { MatNativeDateModule } from '@angular/material/core'
+import { MatCheckboxModule } from '@angular/material/checkbox'
 
 @NgModule({
   declarations: [
@@ -39,7 +52,12 @@ import { MatMenuModule } from '@angular/material/menu'
     CategoriesComponent,
     HelpComponent,
     NoteComponent,
-    CategoryComponent
+    CategoryComponent,
+    ItemComponent,
+    ItemSheetComponent,
+    StackComponent,
+    BoardComponent,
+    BoardsComponent
   ],
   imports: [
     BrowserModule,
@@ -63,7 +81,15 @@ import { MatMenuModule } from '@angular/material/menu'
     MatSelectModule,
     MatGridListModule,
     MatRippleModule,
-    MatMenuModule
+    MatMenuModule,
+    MatCheckboxModule,
+    MatNativeDateModule,
+    MatDatepickerModule,
+    MatBottomSheetModule,
+    MatListModule,
+    MatSidenavModule,
+    MatCardModule,
+    DragDropModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

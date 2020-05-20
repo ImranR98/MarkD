@@ -1,0 +1,12 @@
+<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="1em">
+    <div fxLayout="column" fxFlex="70%">
+        <mat-form-field>
+            <input matInput (ngModelChange)="somethingChanged($event); updateItemDateModified();"
+                [(ngModel)]="item.title" placeholder="Item Title" type="text">
+        </mat-form-field>
+        <small>{{item.archived ? 'Archived. ' : ''}}{{ item.due ? 'Due on ' + formatDate(item.due) + '.' : ''}}</small>
+    </div>
+    <button mat-icon-button (click)="openItem()" style="overflow: hidden;">
+        <mat-icon>launch</mat-icon>
+    </button>
+</div>
