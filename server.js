@@ -297,7 +297,7 @@ app.post('/folder/rename', /*checkIfAuthenticated,*/(req, res) => {
 
 // Any other route serves the frontend
 app.get('*', (req, res) => {
-    res.sendFile(__dirname + '/dist/deck/index.html')
+    res.sendFile(__dirname + '/dist/MarkD/index.html')
 });
 
 //Set Port
