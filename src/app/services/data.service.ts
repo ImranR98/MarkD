@@ -14,8 +14,39 @@ export class DataService {
     withCredentials: true // Make sure JWT header is sent
   }
 
-  formatDate(date: Date) {
-    return date.toDateString() + ', ' + (date.getHours() > 12 || date.getHours() == 0 ? date.getHours() == 0 ? 12 : date.getHours() - 12 : date.getHours()) + (date.getMinutes() == 0 ? '' : date.getMinutes() <= 9 ? ':0' + date.getMinutes() : ':' + date.getMinutes()) + ' ' + (date.getHours() > 12 ? 'PM' : 'AM')
+  findMaxDaysBetweenDates(date1: Date, date2: Date): number {
+    let tDate2 = new Date(date2.getTime())
+    tDate2.setHours(date1.getHours(), date1.getMinutes(), date1.getSeconds(), date1.getMilliseconds())
+    return Math.ceil((tDate2.getTime() - date1.getTime()) / (1000 * 60 * 60 * 24))
+  }
+
+  getNaturalDaysString(days: number): string {
+    const genStr = (num: number, unit: string): string => {
+      if (num >= 0) {
+        return `In ${num} ${Math.abs(num) == 1 ? unit : unit + 's'}`
+      } else {
+        return `${num * -1} ${Math.abs(num) == 1 ? unit : unit + 's'} ago`
+      }
+    }
+    if (days == 0) return 'Today'
+    if (days == 1) return 'Tomorrow'
+    if (days == -1) return 'Yesterday'
+    let absDays = Math.abs(days)
+    if (absDays < 30) return genStr(days, 'day')
+    if (absDays >= 30 && absDays < 365) {
+      if (days >= 30 && days < 45) return 'In a month'
+      if (days <= -30 && days > -45) return 'A month ago'
+      return genStr(Math.round(((days / 30) + Number.EPSILON) * 10) / 10, 'month')
+    }
+    if (days >= 365 && days < 545) return 'In a year'
+    if (days <= -365 && days > -545) return 'An year ago'
+    return genStr(Math.round(((days / 365) + Number.EPSILON) * 10) / 10, 'year')
+  }
+
+  formatDate(date: Date, naturalString: boolean = false, time: boolean = true): string {
+    if (naturalString) return this.getNaturalDaysString(this.findMaxDaysBetweenDates(new Date(), date))
+    if (!time) return date.toDateString()
+    return date.toDateString() + ', ' + (date.getHours() > 12 || date.getHours() == 0 ? date.getHours() == 0 ? 12 : date.getHours() - 12 : date.getHours()) + (date.getMinutes() == 0 ? '' : date.getMinutes() <= 9 ? ':0' + date.getMinutes() : ':' + date.getMinutes()) + ' ' + (date.getHours() >= 12 ? 'PM' : 'AM')
   }
 
   getBoards = async (): Promise<any> => {

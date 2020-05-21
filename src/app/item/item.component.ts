@@ -50,7 +50,7 @@ export class ItemComponent implements OnInit {
   }
 
   formatDate(date: Date) {
-    return this.dataService.formatDate(date)
+    return this.dataService.formatDate(date, true, false)
   }
 
 }
