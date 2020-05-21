@@ -6,7 +6,7 @@
         </mat-form-field>
         <small>{{item.archived ? 'Archived. ' : ''}}{{ item.due ? 'Due on ' + formatDate(item.due) + '.' : ''}}</small>
     </div>
-    <button mat-icon-button (click)="openItem()" style="overflow: hidden;">
+    <button mat-icon-button (click)="openItem()" class="forceHideOverflow">
         <mat-icon>launch</mat-icon>
     </button>
 </div>

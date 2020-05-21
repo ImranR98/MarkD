@@ -11,7 +11,7 @@ require('dotenv').config({ path: __dirname + '/.env' })
 // If the userDataDir is changed, it should also be changed in .gitignore to avoid committing personal data
 const userDataDir = `${__dirname}/userData`
 const passwordPath = `${userDataDir}/password.txt`
-const notesDir = `${__dirname}/userData/Notes`
+const notesDir = `${userDataDir}/Notes`
 const boardsPath = `${userDataDir}/boards.json`
 if (!fs.existsSync(userDataDir)) fs.mkdirSync(userDataDir)
 else if (!fs.statSync(userDataDir).isDirectory()) fs.mkdirSync(userDataDir)
@@ -52,6 +52,7 @@ checkIfAuthenticated = expressJwt({
     requestProperty: 'jwt'
 })
 
+// Get a the boards.json for Deck
 const getBoards = () => {
 	let boards = []
 	if (fs.existsSync(boardsPath)) {
@@ -64,9 +65,11 @@ const getBoards = () => {
 	}
 	return boards
 }
+// Save to boards.json for Deck
 const saveBoards = (boards) => {
 	fs.writeFileSync(boardsPath, JSON.stringify(boards, null, '\t'))
 }
+// Get all Notes directories and a list of files for each
 const getCategories = () => {
     return [''].concat(fs.readdirSync(notesDir).filter(file => fs.statSync(`${notesDir}/${file}`).isDirectory())).map(category => {
         return {
@@ -75,6 +78,7 @@ const getCategories = () => {
         }
     })
 }
+// Get detailed info for all Notes in a specific dir within Notes, along with a list of the other dirs.
 const getCategory = (category) => {
     let target = `${notesDir}${category ? `/${category}` : ''}`
     if (fs.existsSync(target)) {
@@ -95,6 +99,7 @@ const getCategory = (category) => {
     }
     throw null
 }
+// Get the contents of a specific Note
 const getNote = (category, fileName) => {
     let stats = fs.statSync(`${notesDir}/${category ? category + '/' : ''}${fileName}`)
     return {
@@ -147,7 +152,6 @@ const getPassword = () => {
     }
     return password
 }
-
 const setPassword = (password) => {
     fs.writeFileSync(passwordPath, password)
 }
@@ -217,6 +221,7 @@ app.post('/changePassword', checkIfAuthenticated, (req, res) => {
     }
 })
 
+// Routes for Deck
 app.get('/boards', checkIfAuthenticated, (req, res) => {
 	try {
 		res.send(getBoards())
@@ -237,6 +242,8 @@ app.post('/boards', checkIfAuthenticated, (req, res) => {
 		res.status(400).send()
 	}
 })
+
+// Routes for Notes
 app.get('/categories', checkIfAuthenticated, (req, res) => {
     try {
         res.send(getCategories())

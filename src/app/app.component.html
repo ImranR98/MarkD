@@ -1,18 +1,18 @@
-<div style="height: 100%;" fxLayout="column">
+<div class="height100" fxLayout="column">
     <mat-toolbar fxLayout="row" fxLayoutGap="1em" color="primary" fxLayoutAlign="space-between center"
-        style="padding-top: 1em; padding-bottom: 1em;">
+        class="forceStdPaddingVertical">
         <a routerLink="/" class="hiddenLink">MarkD</a>
         <div fxLayout="row" fxLayoutGap="1em" fxLayoutAlign="default center">
-            <button mat-icon-button routerLink="/deck" routerLinkActive="activeLink" style="overflow: hidden;" aria-label="Deck" matTooltip="Deck" [matTooltipShowDelay]="1500">
+            <button mat-icon-button routerLink="/deck" routerLinkActive="activeLink" class="forceHideOverflow" aria-label="Deck" matTooltip="Deck" [matTooltipShowDelay]="1500">
                 <mat-icon>dynamic_feed</mat-icon>
             </button>
-            <button mat-icon-button routerLink="/notes" routerLinkActive="activeLink" style="overflow: hidden;" aria-label="Notes" matTooltip="Notes" [matTooltipShowDelay]="1500">
+            <button mat-icon-button routerLink="/notes" routerLinkActive="activeLink" class="forceHideOverflow" aria-label="Notes" matTooltip="Notes" [matTooltipShowDelay]="1500">
                 <mat-icon>notes</mat-icon>
             </button>
-            <button mat-icon-button routerLink="/help" routerLinkActive="activeLink" style="overflow: hidden;" aria-label="Help" matTooltip="Help" [matTooltipShowDelay]="1500">
+            <button mat-icon-button routerLink="/help" routerLinkActive="activeLink" class="forceHideOverflow" aria-label="Help" matTooltip="Help" [matTooltipShowDelay]="1500">
                 <mat-icon>help_outline</mat-icon>
             </button>
-            <button mat-icon-button *ngIf="authService.isLoggedIn | async" (click)="logout()" style="overflow: hidden;" aria-label="Logout" matTooltip="Logout" [matTooltipShowDelay]="1500">
+            <button mat-icon-button *ngIf="authService.isLoggedIn | async" (click)="logout()" class="forceHideOverflow" aria-label="Logout" matTooltip="Logout" [matTooltipShowDelay]="1500">
                 <mat-icon>exit_to_app</mat-icon>
             </button>
         </div>

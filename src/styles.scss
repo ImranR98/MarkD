@@ -1,9 +1,11 @@
 @import '~@angular/material/theming';
 @include mat-core();
 
+// Colors for light theme
 $app-primary-light: mat-palette($mat-indigo, 500, 400, 900);
 $app-accent-light: mat-palette($mat-pink);
 $app-warn-light: mat-palette($mat-red);
+// Colors for dark theme
 $app-primary-dark: mat-palette($mat-indigo, 800, 500, 900);
 $app-accent-dark: mat-palette($mat-pink);
 $app-warn-dark: mat-palette($mat-red);
@@ -169,4 +171,25 @@ a {
 .textOverflow {
     overflow: auto;
     white-space: nowrap;
+}
+
+.bottomFixed {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.forceAutoOverflow {
+    overflow: auto !important;
+}
+
+.forceStdPaddingVertical {
+    padding-top: 1em !important;
+    padding-bottom: 1em !important;
+}
+
+mat-grid-list {
+    overflow: auto;
+    min-height:max-content;
 }

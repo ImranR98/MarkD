@@ -11,11 +11,11 @@
                     Board</button>
             </mat-menu>
             <button mat-icon-button aria-label="Board Options" [matMenuTriggerFor]="boardOptions"
-                style="overflow: hidden;" aria-label="Options" matTooltip="Board Options" [matTooltipShowDelay]="1500">
+                class="forceHideOverflow" aria-label="Options" matTooltip="Board Options" [matTooltipShowDelay]="1500">
                 <mat-icon>more_horiz</mat-icon>
             </button>
         </div>
-        <button mat-icon-button (click)="toggleBoardsFn()" style="overflow: hidden;" aria-label="Toggle Board View" matTooltip="Toggle Board View" [matTooltipShowDelay]="1500">
+        <button mat-icon-button (click)="toggleBoardsFn()" class="forceHideOverflow" aria-label="Toggle Board View" matTooltip="Toggle Board View" [matTooltipShowDelay]="1500">
             <mat-icon>menu_open</mat-icon>
         </button>
     </div>

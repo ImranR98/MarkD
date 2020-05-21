@@ -5,12 +5,12 @@
                 (ngModelChange)="somethingChanged($event)">
         </mat-form-field>
         <div fxLayout="row" fxLayoutGap="1em">
-            <button mat-icon-button (click)="archiveThis()" [disabled]="!data.item.title" style="overflow: hidden;"
+            <button mat-icon-button (click)="archiveThis()" [disabled]="!data.item.title" class="forceHideOverflow"
                 aria-label="Archive/Unarchive" matTooltip="Archive/Unarchive Item" [matTooltipShowDelay]="1500">
                 <mat-icon *ngIf="!data.item.archived">archive_outline</mat-icon>
                 <mat-icon *ngIf="data.item.archived">unarchive_outline</mat-icon>
             </button>
-            <button mat-icon-button color="warn" (click)="deleteThis()" style="overflow: hidden;" aria-label="Delete"
+            <button mat-icon-button color="warn" (click)="deleteThis()" class="forceHideOverflow" aria-label="Delete"
                 matTooltip="Delete Item" [matTooltipShowDelay]="1500">
                 <mat-icon>delete_outline</mat-icon>
             </button>

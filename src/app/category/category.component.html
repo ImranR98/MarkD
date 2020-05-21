@@ -1,7 +1,7 @@
 <div class="stdMargin" *ngIf="category$.value">
     <div fxLayout="row" fxLayoutGap="1em" fxLayoutAlign="space-between start">
         <h1>{{category$.value.category ? category$.value.category : 'Uncategorized'}}</h1>
-        <button mat-icon-button style="overflow: hidden;" routerLink="/notes/note/{{category$.value.category}}"
+        <button mat-icon-button class="forceHideOverflow" routerLink="/notes/note/{{category$.value.category}}"
             aria-label="Add Note" color="primary" matTooltip="Add Note" [matTooltipShowDelay]="1500">
             <mat-icon>add</mat-icon>
         </button>
@@ -24,8 +24,7 @@
         </div>
     </div>
     <div fxLayout="column" fxLayoutGap="1em">
-        <mat-grid-list #grid role="list" cols="1" rowHeight="13em" gutterSize="1em"
-            style="overflow: auto; min-height:max-content;" [class.hide]="displayedCategories.length == 0">
+        <mat-grid-list #grid role="list" cols="1" rowHeight="13em" gutterSize="1em" [class.hide]="displayedCategories.length == 0">
             <mat-grid-tile matRipple role="listitem" *ngFor="let note of displayedCategories" fxLayout="column"
                 class="noteContainer">
                 <mat-menu #noteMenu="matMenu">
@@ -44,18 +43,18 @@
                             {{formatDate(note.created)}}</small>
                     </div>
                     <div fxLayout="row" fxLayoutGap="1em" fxLayoutAlign="space-between" fxLayoutGap="1em">
-                        <button mat-icon-button style="overflow: hidden;" color="warn"
+                        <button mat-icon-button class="forceHideOverflow" color="warn"
                             (click)="deleteNote(category$.value.category, note.fileName); $event.stopPropagation()"
                             aria-label="Delete" matTooltip="Delete" [matTooltipShowDelay]="1500">
                             <mat-icon>delete_outline</mat-icon>
                         </button>
                         <div fxLayout="row" fxLayoutGap="1em" fxLayoutAlign="end">
-                            <button mat-icon-button style="overflow: hidden;" aria-label="Rename" class="stdMarginTop"
+                            <button mat-icon-button class="forceHideOverflow" aria-label="Rename" class="stdMarginTop"
                                 (click)="renameNote(category$.value.category, note.fileName); $event.stopPropagation()"
                                 matTooltip="Rename" [matTooltipShowDelay]="1500">
                                 <mat-icon>edit</mat-icon>
                             </button>
-                            <button mat-icon-button style="overflow: hidden;" color="primary"
+                            <button mat-icon-button class="forceHideOverflow" color="primary"
                                 [matMenuTriggerFor]="noteMenu" (click)="$event.stopPropagation()" aria-label="Move"
                                 matTooltip="Move" [matTooltipShowDelay]="1500">
                                 <mat-icon>swap_vert</mat-icon>

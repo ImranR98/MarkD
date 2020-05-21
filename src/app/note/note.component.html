@@ -1,4 +1,4 @@
-<div *ngIf="activeNote; else loading" fxLayout="column" fxLayoutAlign="space-between" style="height: 100%;">
+<div *ngIf="activeNote; else loading" fxLayout="column" fxLayoutAlign="space-between" class="height100">
     <div>
         <div class="stdMarginTop stdMarginHorizontal">
             <mat-form-field *ngIf="new">
@@ -8,11 +8,10 @@
         </div>
         <app-editor [data]="activeNote.data" (change)="changed($event)"></app-editor>
     </div>
-    <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="1em" class="stdMarginHorizontal">
+    <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="1em" class="stdMarginHorizontal forceStdPaddingVertical">
         <button mat-button color="warn" (click)="delete()" [disabled]="new">Delete</button>
         <button mat-button color="primary" (click)="save()">Save</button>
     </div>
-    <div>&nbsp;</div>
 </div>
 
 <ng-template #loading>
