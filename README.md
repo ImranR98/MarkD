@@ -37,8 +37,10 @@ Files are shown on the page and are categorized by their subdirectory on the ser
 
 ## Screenshots
 ### Deck - Main Screen
-![Screenshot of Deck](/screenshots/Boards.png?raw=true "Deck")
+![Screenshot of Deck](/screenshots/Deck.png?raw=true "Deck")
 ### Notes - Main Screen
-![Screenshot of Notes](/screenshots/Categories.png?raw=true "Notes")
+![Screenshot of Notes](/screenshots/Notes.png?raw=true "Notes")
+### Notes - Editor
+![Screenshot of Notes Editor](/screenshots/Editor.png?raw=true "Notes Editor")
 ### Responsive UI and dark mode
 ![Screenshot of Responsive UI and dark mode](/screenshots/ResponsiveDark.png?raw=true "Responsive UI and dark mode")
