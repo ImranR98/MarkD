@@ -4,7 +4,7 @@
             <input matInput (ngModelChange)="somethingChanged($event); updateItemDateModified();"
                 [(ngModel)]="item.title" placeholder="Item Title" type="text">
         </mat-form-field>
-        <small>{{item.archived ? 'Archived. ' : ''}}{{ item.due ? formatDate(item.due) : ''}}</small>
+        <small>{{item.archived ? 'Archived. ' : ''}}{{ item.due ? formatDate(item.due) + '.' : ''}}</small>
     </div>
     <button mat-icon-button (click)="openItem()" class="forceHideOverflow">
         <mat-icon>launch</mat-icon>
