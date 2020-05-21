@@ -16,7 +16,7 @@ $app-dark-theme: mat-dark-theme($app-primary, $app-accent, $app-warn);
       color: #000
     }
     .activeLink {
-        color: mat-color($app-accent, lighter)
+        color: mat-color($app-accent, lighter) !important
     }
     .warn {
         color: mat-color($app-warn)
@@ -31,6 +31,9 @@ $app-dark-theme: mat-dark-theme($app-primary, $app-accent, $app-warn);
     mat-sidenav-container, mat-sidenav {
         background-color: rgb(255, 255, 255) !important;
     }
+    .mat-primary-button {
+        color: mat-color($app-primary)
+    }
 }
 
 @media (prefers-color-scheme: dark) {
@@ -40,7 +43,7 @@ $app-dark-theme: mat-dark-theme($app-primary, $app-accent, $app-warn);
       color: #FFF;
     }
     .activeLink {
-        color: mat-color($app-accent, lighter)
+        color: mat-color($app-accent, lighter) !important
     }
     .archived {
         background-color: rgba(255, 255, 255, 0.05) !important;
@@ -61,11 +64,8 @@ $app-dark-theme: mat-dark-theme($app-primary, $app-accent, $app-warn);
     mat-sidenav-container, mat-sidenav {
         background-color: rgb(25, 25, 25) !important;
     }
-    .mat-primary {
-        color: mat-color($app-primary, lighter) !important
-    }
-    .mat-white {
-        color: #FFF !important
+    .mat-primary-button { // This is needed for dark mode (mat-indigo is too dark otherwise)
+        color: mat-color($app-primary, lighter)
     }
 }
 
