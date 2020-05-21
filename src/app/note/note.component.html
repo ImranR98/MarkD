@@ -8,12 +8,15 @@
         </div>
         <app-editor [data]="activeNote.data" (change)="changed($event)"></app-editor>
     </div>
-    <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="1em" class="stdMarginHorizontal forceStdPaddingVertical">
+    <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="1em"
+        class="stdMarginHorizontal forceStdPaddingVertical">
         <button mat-button color="warn" (click)="delete()" [disabled]="new">Delete</button>
         <button mat-button color="primary-button" (click)="save()">Save</button>
     </div>
 </div>
 
 <ng-template #loading>
-    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    <div class="bottomFixed">
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    </div>
 </ng-template>

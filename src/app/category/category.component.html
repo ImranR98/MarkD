@@ -67,6 +67,6 @@
     </div>
     <span *ngIf="displayedCategories.length == 0 && category$.value">No Notes.</span>
 </div>
-<div *ngIf="!category$.value">
+<div *ngIf="!category$.value" class="bottomFixed">
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </div>
