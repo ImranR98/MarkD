@@ -1,7 +1,7 @@
-import { Component, OnInit, Input, Output } from '@angular/core';
-import { Board, Stack } from '../types';
-import { EventEmitter } from '@angular/core';
-import { moveItemInArray } from '@angular/cdk/drag-drop';
+import { Component, OnInit, Input, Output } from '@angular/core'
+import { Board, Stack } from '../types'
+import { EventEmitter } from '@angular/core'
+import { moveItemInArray } from '@angular/cdk/drag-drop'
 
 @Component({
   selector: 'app-board',

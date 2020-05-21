@@ -1,6 +1,5 @@
-import { Component, Input, OnInit, Output, SimpleChange } from '@angular/core';
-import { NoteInfo } from '../types';
-import { EventEmitter } from '@angular/core';
+import { Component, Input, Output } from '@angular/core'
+import { EventEmitter } from '@angular/core'
 
 @Component({
   selector: 'app-editor',

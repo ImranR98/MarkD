@@ -1,8 +1,9 @@
-import { Component, OnInit, Input, Output } from '@angular/core';
-import { Item } from '../types';
-import { MatBottomSheet } from '@angular/material/bottom-sheet';
-import { EventEmitter } from '@angular/core';
-import { ItemSheetComponent } from '../item-sheet/item-sheet.component';
+import { Component, OnInit, Input, Output } from '@angular/core'
+import { Item } from '../types'
+import { MatBottomSheet } from '@angular/material/bottom-sheet'
+import { EventEmitter } from '@angular/core'
+import { ItemSheetComponent } from '../item-sheet/item-sheet.component'
+import { DataService } from '../services/data.service'
 
 @Component({
   selector: 'app-item',
@@ -14,7 +15,7 @@ export class ItemComponent implements OnInit {
   @Output() change: EventEmitter<Event> = new EventEmitter()
   @Output() delete: EventEmitter<string> = new EventEmitter()
 
-  constructor(private bottomSheet: MatBottomSheet) { }
+  constructor(private bottomSheet: MatBottomSheet, private dataService: DataService) { }
 
   ngOnInit(): void {
     if (typeof this.item.due == 'string') this.item.due = new Date(Date.parse(this.item.due))
@@ -49,7 +50,7 @@ export class ItemComponent implements OnInit {
   }
 
   formatDate(date: Date) {
-    return date.toDateString() + ', ' + (date.getHours() > 12 || date.getHours() == 0 ? date.getHours() == 0 ? 12 : date.getHours() - 12 : date.getHours()) + (date.getMinutes() == 0 ? '' : date.getMinutes() <= 9 ? '0' + date.getMinutes() : date.getMinutes()) + ' ' + (date.getHours() > 12 ? 'PM' : 'AM')
+    return this.dataService.formatDate(date)
   }
 
 }

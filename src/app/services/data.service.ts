@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { environment } from 'src/environments/environment';
-import { Board, Note, CategoryInfo } from '../types';
+import { Injectable } from '@angular/core'
+import { HttpClient, HttpHeaders } from '@angular/common/http'
+import { environment } from 'src/environments/environment'
+import { Board, Note, CategoryInfo } from '../types'
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +12,10 @@ export class DataService {
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
     withCredentials: true // Make sure JWT header is sent
+  }
+
+  formatDate(date: Date) {
+    return date.toDateString() + ', ' + (date.getHours() > 12 || date.getHours() == 0 ? date.getHours() == 0 ? 12 : date.getHours() - 12 : date.getHours()) + (date.getMinutes() == 0 ? '' : date.getMinutes() <= 9 ? ':0' + date.getMinutes() : ':' + date.getMinutes()) + ' ' + (date.getHours() > 12 ? 'PM' : 'AM')
   }
 
   getBoards = async (): Promise<any> => {

@@ -1,12 +1,12 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { LoginComponent } from './login/login.component';
-import { CategoriesComponent } from './categories/categories.component';
-import { AuthService } from './services/auth.service';
-import { HelpComponent } from './help/help.component';
-import { NoteComponent } from './note/note.component';
-import { CategoryComponent } from './category/category.component';
-import { BoardsComponent } from './boards/boards.component';
+import { NgModule } from '@angular/core'
+import { Routes, RouterModule } from '@angular/router'
+import { LoginComponent } from './login/login.component'
+import { CategoriesComponent } from './categories/categories.component'
+import { AuthService } from './services/auth.service'
+import { HelpComponent } from './help/help.component'
+import { NoteComponent } from './note/note.component'
+import { CategoryComponent } from './category/category.component'
+import { BoardsComponent } from './boards/boards.component'
 
 
 const routes: Routes = [
@@ -60,7 +60,7 @@ const routes: Routes = [
     path: '**',
     redirectTo: '/notes'
   }
-];
+]
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

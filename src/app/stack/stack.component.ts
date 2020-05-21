@@ -1,7 +1,7 @@
-import { Component, OnInit, Input, Output } from '@angular/core';
-import { Stack, Item } from '../types';
-import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
-import { EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output } from '@angular/core'
+import { Stack, Item } from '../types'
+import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop'
+import { EventEmitter } from '@angular/core'
 
 @Component({
   selector: 'app-stack',

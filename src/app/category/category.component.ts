@@ -1,11 +1,11 @@
-import { Component, OnInit, Input, ViewChild, Output, EventEmitter } from '@angular/core';
-import { CategoryInfo, NoteInfo, Note } from '../types';
-import { MediaChange, MediaObserver } from '@angular/flex-layout';
-import { MatGridList } from '@angular/material/grid-list';
-import { DataService } from '../services/data.service';
-import { ErrorService } from '../services/error.service';
-import { Subscription, BehaviorSubject } from 'rxjs';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnInit, ViewChild } from '@angular/core'
+import { CategoryInfo, NoteInfo, Note } from '../types'
+import { MediaChange, MediaObserver } from '@angular/flex-layout'
+import { MatGridList } from '@angular/material/grid-list'
+import { DataService } from '../services/data.service'
+import { ErrorService } from '../services/error.service'
+import { Subscription, BehaviorSubject } from 'rxjs'
+import { ActivatedRoute, Router } from '@angular/router'
 
 @Component({
   selector: 'app-category',
@@ -23,9 +23,9 @@ export class CategoryComponent implements OnInit {
   searchQuery: string = ''
   selectedSort = 0
 
-  constructor(private route: ActivatedRoute, private mediaObserver: MediaObserver, private notesService: DataService, private errorService: ErrorService, private router: Router) { }
+  constructor(private route: ActivatedRoute, private mediaObserver: MediaObserver, private dataService: DataService, private errorService: ErrorService) { }
 
-  @ViewChild('grid') grid: MatGridList;
+  @ViewChild('grid') grid: MatGridList
   gridByBreakpoint = {
     xl: 8,
     lg: 6,
@@ -35,7 +35,7 @@ export class CategoryComponent implements OnInit {
   }
 
   getCategory(category: string) {
-    this.notesService.getCategory(category).then(category => {
+    this.dataService.getCategory(category).then(category => {
       this.category$.next(category.category)
       this.categories$.next(category.categories)
     }).catch(err => {
@@ -81,23 +81,23 @@ export class CategoryComponent implements OnInit {
       switch (this.selectedSort) {
         case 0:
           this.displayedCategories = this.displayedCategories.sort((a, b) => a.fileName.localeCompare(b.fileName))
-          break;
+          break
         case 1:
           this.displayedCategories = this.displayedCategories.sort((a, b) => b.created.toString().localeCompare(a.created.toString()))
-          break;
+          break
         case 2:
           this.displayedCategories = this.displayedCategories.sort((a, b) => b.modified.toString().localeCompare(a.modified.toString()))
-          break;
+          break
         default:
           this.displayedCategories = this.displayedCategories.sort((a, b) => b.modified.toString().localeCompare(a.modified.toString()))
-          break;
+          break
       }
     }
   }
 
   deleteNote(category: string, fileName: string) {
     if (confirm('Delete this file? This is permanent.')) {
-      this.notesService.deleteNote(category, fileName).then(() => {
+      this.dataService.deleteNote(category, fileName).then(() => {
         this.category$.value.categories = this.category$.value.categories.filter(note => note.fileName != fileName)
         this.refreshDisplayedCategories()
       }).catch(err => this.errorService.showError(err, () => this.deleteNote(category, fileName)))
@@ -107,7 +107,7 @@ export class CategoryComponent implements OnInit {
   renameNote(category: string, fileName: string) {
     let newName = prompt('Enter new name')
     if (newName) {
-      this.notesService.renameNote(category, fileName, newName).then(() => {
+      this.dataService.renameNote(category, fileName, newName).then(() => {
         this.category$.value.categories = this.category$.value.categories.map(note => {
           if (note.fileName == fileName) note.fileName = newName.endsWith('.md') ? newName : newName + '.md'
           return note
@@ -117,13 +117,13 @@ export class CategoryComponent implements OnInit {
   }
 
   moveNote(category: string, toCategory: string, fileName: string) {
-    this.notesService.moveNote(category, toCategory, fileName).then(() => {
+    this.dataService.moveNote(category, toCategory, fileName).then(() => {
       this.category$.value.categories = this.category$.value.categories.filter(note => note.fileName != fileName)
       this.refreshDisplayedCategories()
     }).catch(err => this.errorService.showError(err, () => this.moveNote(category, toCategory, fileName)))
   }
 
   formatDate(date: Date) {
-    return date.toDateString() + ', ' + (date.getHours() > 12 || date.getHours() == 0 ? date.getHours() == 0 ? 12 : date.getHours() - 12 : date.getHours()) + (date.getMinutes() == 0 ? '' : date.getMinutes() <= 9 ? ':0' + date.getMinutes() : ':' + date.getMinutes()) + ' ' + (date.getHours() > 12 ? 'PM' : 'AM')
+    return this.dataService.formatDate(date)
   }
 }

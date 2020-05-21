@@ -1,9 +1,9 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription, BehaviorSubject } from 'rxjs';
-import { Note } from '../types';
-import { ErrorService } from '../services/error.service';
-import { DataService } from '../services/data.service';
+import { Component, OnInit, OnDestroy } from '@angular/core'
+import { ActivatedRoute, Router } from '@angular/router'
+import { Subscription, BehaviorSubject } from 'rxjs'
+import { Note } from '../types'
+import { ErrorService } from '../services/error.service'
+import { DataService } from '../services/data.service'
 
 @Component({
   selector: 'app-note',
@@ -18,12 +18,12 @@ export class NoteComponent implements OnInit, OnDestroy {
 
   activeNote: { fileName: string, data: string } = null
 
-  constructor(private route: ActivatedRoute, private notesService: DataService, private errorService: ErrorService, private router: Router) { }
+  constructor(private route: ActivatedRoute, private dataService: DataService, private errorService: ErrorService, private router: Router) { }
 
   getNote(category: string, fileName: string) {
     this.loading = true
     this.new = false
-    this.notesService.getNote(category, fileName).then(note => {
+    this.dataService.getNote(category, fileName).then(note => {
       this.loading = false
       this.note$.next(note)
     }).catch(err => {
@@ -51,7 +51,7 @@ export class NoteComponent implements OnInit, OnDestroy {
   }
 
   save() {
-    this.notesService.saveNote(this.activeNote.fileName, this.note$.value.category, this.activeNote.data).then(() => {
+    this.dataService.saveNote(this.activeNote.fileName, this.note$.value.category, this.activeNote.data).then(() => {
       this.errorService.showError('Saved', null)
       if (!this.activeNote.fileName.endsWith('.md')) this.activeNote.fileName += '.md'
       this.new = false
@@ -63,7 +63,7 @@ export class NoteComponent implements OnInit, OnDestroy {
   delete() {
     if (!this.new) {
       if (confirm('Delete this file? This is permanent.')) {
-        this.notesService.deleteNote(this.note$.value.category, this.note$.value.info.fileName).then(() => {
+        this.dataService.deleteNote(this.note$.value.category, this.note$.value.info.fileName).then(() => {
           this.errorService.showError('Deleted')
           this.new = true
           this.router.navigate(['/'])

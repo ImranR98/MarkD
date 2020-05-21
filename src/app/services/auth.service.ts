@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
-import { HttpHeaders, HttpClient } from '@angular/common/http';
-import { Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { environment } from 'src/environments/environment';
+import { Injectable } from '@angular/core'
+import { HttpHeaders, HttpClient } from '@angular/common/http'
+import { Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router'
+import { BehaviorSubject, Observable } from 'rxjs'
+import { environment } from 'src/environments/environment'
 import * as moment from 'moment/moment'
 import * as jwt_decode from 'jwt-decode'
 

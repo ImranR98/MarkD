@@ -1,10 +1,10 @@
-import { Component, OnInit, ChangeDetectorRef, Input, ViewChild, Output } from '@angular/core';
-import { MediaMatcher } from '@angular/cdk/layout';
-import { Board } from '../types';
-import { MatSidenav } from '@angular/material/sidenav';
-import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
-import { DataService } from '../services/data.service';
-import { ErrorService } from '../services/error.service';
+import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core'
+import { MediaMatcher } from '@angular/cdk/layout'
+import { Board } from '../types'
+import { MatSidenav } from '@angular/material/sidenav'
+import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop'
+import { DataService } from '../services/data.service'
+import { ErrorService } from '../services/error.service'
 
 @Component({
   selector: 'app-boards',
@@ -24,7 +24,7 @@ export class BoardsComponent implements OnInit {
 
   loading: boolean = false
 
-  private _mobileQueryListener: () => void;
+  private _mobileQueryListener: () => void
 
   constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private dataService: DataService, private errorService: ErrorService) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)')

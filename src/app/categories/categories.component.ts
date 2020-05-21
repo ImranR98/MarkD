@@ -1,9 +1,9 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
-import { DataService } from '../services/data.service';
-import { ErrorService } from '../services/error.service';
-import { BehaviorSubject, Subscription } from 'rxjs';
-import { MediaObserver, MediaChange } from '@angular/flex-layout';
-import { MatGridList } from '@angular/material/grid-list';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core'
+import { DataService } from '../services/data.service'
+import { ErrorService } from '../services/error.service'
+import { BehaviorSubject, Subscription } from 'rxjs'
+import { MediaObserver, MediaChange } from '@angular/flex-layout'
+import { MatGridList } from '@angular/material/grid-list'
 
 @Component({
   selector: 'app-categories',
@@ -16,7 +16,7 @@ export class CategoriesComponent implements OnInit, OnDestroy {
 
   subs: Subscription[] = []
 
-  @ViewChild('grid') grid: MatGridList;
+  @ViewChild('grid') grid: MatGridList
   gridByBreakpoint = {
     xl: 8,
     lg: 6,

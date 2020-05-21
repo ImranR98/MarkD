@@ -1,7 +1,8 @@
-import { Component, OnInit, Inject, Output } from '@angular/core';
-import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
-import { Item } from '../types';
-import { EventEmitter } from 'events';
+import { Component, OnInit, Inject, Output } from '@angular/core'
+import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet'
+import { Item } from '../types'
+import { EventEmitter } from 'events'
+import { DataService } from '../services/data.service'
 
 @Component({
   selector: 'app-item-sheet',
@@ -10,7 +11,7 @@ import { EventEmitter } from 'events';
 })
 export class ItemSheetComponent implements OnInit {
 
-  constructor(private bottomSheetRef: MatBottomSheetRef<ItemSheetComponent>, @Inject(MAT_BOTTOM_SHEET_DATA) public data: { item: Item }) { }
+  constructor(private bottomSheetRef: MatBottomSheetRef<ItemSheetComponent>, @Inject(MAT_BOTTOM_SHEET_DATA) public data: { item: Item }, private dataService: DataService) { }
 
   @Output() events: EventEmitter = new EventEmitter()
   ready: boolean = false
@@ -33,7 +34,7 @@ export class ItemSheetComponent implements OnInit {
   }
 
   formatDate(date: Date) {
-    return date.toDateString() + ', ' + (date.getHours() > 12 || date.getHours() == 0 ? date.getHours() == 0 ? 12 : date.getHours() - 12 : date.getHours()) + (date.getMinutes() == 0 ? '' : date.getMinutes() <= 9 ? ':0' + date.getMinutes() : ':' + date.getMinutes()) + ' ' + (date.getHours() > 12 ? 'PM' : 'AM')
+    return this.dataService.formatDate(date)
   }
 
 }
