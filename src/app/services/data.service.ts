@@ -107,4 +107,12 @@ export class DataService {
   renameCategory = async (category: string, newCategory: string) => {
     return await this.http.post(environment.apiUrl + `/category/rename`, { category, newCategory }, this.httpOptions).toPromise()
   }
+
+  getLastVisitedPage() {
+    return localStorage.getItem('lastVisited')
+  }
+
+  setLastVisitedPage(page: string) {
+    return localStorage.setItem('lastVisited', page)
+  }
 }

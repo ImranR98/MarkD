@@ -46,6 +46,7 @@ export class BoardsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.dataService.setLastVisitedPage('deck')
     this.getBoards()
   }
 

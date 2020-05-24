@@ -13,7 +13,7 @@ const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: '/notes'
+    redirectTo: '/login'
   },
   {
     path: 'login',
@@ -58,7 +58,7 @@ const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: '/notes'
+    redirectTo: '/login'
   }
 ]
 

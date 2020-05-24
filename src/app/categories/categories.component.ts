@@ -100,6 +100,7 @@ export class CategoriesComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.dataService.setLastVisitedPage('notes')
     this.currentlyOpen = localStorage.getItem('openCategory')
     this.subs.push(this.categories$.subscribe(list => {
       this.categories = list

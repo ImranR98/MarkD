@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms'
 import { AuthService } from '../services/auth.service'
 import { Router } from '@angular/router'
 import { ErrorService } from '../services/error.service'
+import { DataService } from '../services/data.service'
 
 @Component({
   selector: 'app-login',
@@ -11,7 +12,7 @@ import { ErrorService } from '../services/error.service'
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private authService: AuthService, private router: Router, private errorService: ErrorService) { }
+  constructor(private authService: AuthService, private router: Router, private errorService: ErrorService, private dataService: DataService) { }
 
   passwordForm = new FormGroup({
     password: new FormControl('', Validators.required)
@@ -21,7 +22,11 @@ export class LoginComponent implements OnInit {
   loading: boolean = false
 
   firstTimeCheck() {
-    if (this.authService.ifLoggedIn(false)) this.router.navigate(['/categories'])
+    if (this.authService.ifLoggedIn(false)) {
+      let lastVisited = this.dataService.getLastVisitedPage()
+      if (lastVisited) this.router.navigate([`/${lastVisited}`])
+      else this.router.navigate(['/deck'])
+    }
     this.loading = true
     this.authService.ifPassword().then(res => {
       this.isFirstTime = res
@@ -50,7 +55,9 @@ export class LoginComponent implements OnInit {
     } else {
       this.authService.auth(password).then(() => {
         this.isFirstTime = false
-        this.router.navigate(['/choice'])
+        let lastVisited = this.dataService.getLastVisitedPage()
+        if (lastVisited) this.router.navigate([`/${lastVisited}`])
+        else this.router.navigate(['/deck'])
       }).catch(err => {
         this.errorService.showError(err)
       })
