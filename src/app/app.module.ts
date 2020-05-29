@@ -41,7 +41,9 @@ import { MatListModule } from '@angular/material/list'
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet'
 import { MatDatepickerModule } from '@angular/material/datepicker'
 import { MatNativeDateModule } from '@angular/material/core'
-import { MatCheckboxModule } from '@angular/material/checkbox'
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment'
 
 @NgModule({
   declarations: [
@@ -89,7 +91,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox'
     MatListModule,
     MatSidenavModule,
     MatCardModule,
-    DragDropModule
+    DragDropModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
