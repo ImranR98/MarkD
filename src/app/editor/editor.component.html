@@ -1,8 +1,7 @@
 <div fxLayout="row" fxLayout.lt-sm="column" class="stdMarginHorizontal" fxLayoutGap="1em" fxShow fxHide.lt-sm>
     <div fxLayout="column" fxFlex="50%">
         <mat-form-field>
-            <textarea matInput placeholder="Note" [(ngModel)]="data" cdkTextareaAutosize
-                cdkAutosizeMinRows="10"></textarea>
+            <textarea matInput placeholder="Note" [(ngModel)]="data" rows="10" (ngModelChange)="changed()"></textarea>
         </mat-form-field>
     </div>
     <mat-divider [vertical]="true"></mat-divider>
@@ -12,8 +11,8 @@
     <mat-tab label="Editor">
         <div fxLayout="column" class="stdMargin">
             <mat-form-field>
-                <textarea matInput placeholder="Note" [(ngModel)]="data" cdkTextareaAutosize
-                    cdkAutosizeMinRows="10" (ngModelChange)="changed()"></textarea>
+                <textarea matInput placeholder="Note" [(ngModel)]="data" rows="10"
+                    (ngModelChange)="changed()"></textarea>
             </mat-form-field>
         </div>
     </mat-tab>
