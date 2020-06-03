@@ -165,6 +165,10 @@ a {
     overflow: auto !important;
 }
 
+.forceHideOverflow {
+    overflow: hidden !important;
+}
+
 .forceStdPaddingVertical {
     padding-top: 1em !important;
     padding-bottom: 1em !important;

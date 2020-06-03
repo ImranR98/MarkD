@@ -1,4 +1,4 @@
-<div *ngIf="data.item" class="stdMarginTop" fxLayout="column">
+<div *ngIf="data.item" class="stdMarginTop" fxLayout="column" class="forceHideOverflow">
     <div fxLayout="row" fxLayoutGap="1em" fxLayoutAlign="space-between center">
         <mat-form-field>
             <input matInput [(ngModel)]="data.item.title" placeholder="Item Title" type="text"
@@ -11,7 +11,7 @@
                 <mat-icon *ngIf="data.item.archived">unarchive_outline</mat-icon>
             </button>
             <button mat-icon-button color="warn" (click)="deleteThis()" class="forceHideOverflow" aria-label="Delete"
-                matTooltip="Delete Item" [matTooltipShowDelay]="1500">
+                class="forceHideOverflow" matTooltip="Delete Item" [matTooltipShowDelay]="1500">
                 <mat-icon>delete_outline</mat-icon>
             </button>
         </div>
@@ -20,7 +20,7 @@
         <mat-label>Description</mat-label>
         <textarea matInput [(ngModel)]="data.item.description" placeholder="Item Description" type="text"
             [disabled]="!data.item.title" (ngModelChange)="somethingChanged($event)" cdkTextareaAutosize
-            cdkAutosizeMinRows="5" cdkAutosizeMaxRows="13"></textarea>
+            cdkAutosizeMinRows="10" cdkAutosizeMaxRows="14"></textarea>
     </mat-form-field>
     <mat-form-field>
         <mat-label>Due Date</mat-label>
