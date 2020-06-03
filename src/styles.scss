@@ -2,8 +2,8 @@
 @include mat-core();
 
 // Colors for light theme
-$app-primary: mat-palette($mat-indigo);
-$app-accent: mat-palette($mat-pink);
+$app-primary: mat-palette($mat-red, 'A400');
+$app-accent: mat-palette($mat-amber);
 $app-warn: mat-palette($mat-red);
 
 $app-light-theme: mat-light-theme($app-primary, $app-accent, $app-warn);
@@ -11,65 +11,55 @@ $app-dark-theme: mat-dark-theme($app-primary, $app-accent, $app-warn);
 
 @media (prefers-color-scheme: light) {
     @include angular-material-theme($app-light-theme);
-    html, body {
-      background-color: rgb(255, 255, 255);
-      color: #000
+    html, body, mat-sidenav-container {
+      background-color: #FFF !important;
+      color: #000;
     }
-    .activeLink {
-        color: mat-color($app-accent, lighter) !important
-    }
-    .warn {
-        color: mat-color($app-warn)
-    }
-    .active {
-        color: mat-color($app-accent, darker) !important;
-        background-color: mat-color($app-accent, default, 0.1) !important;
+    mat-expansion-panel, mat-expansion-panel-header, mat-expansion-panel-body {
+        background-color: rgba(255, 255, 255) !important;
     }
     .archived {
+        background-color: rgba(255, 255, 255, 0.1) !important;
+    }
+    .active {
         background-color: rgba(0, 0, 0, 0.05) !important;
     }
-    mat-sidenav-container, mat-sidenav {
-        background-color: rgb(255, 255, 255) !important;
+    .activeLink {
+        background-color: rgba(255, 255, 255, 0.1) !important;
     }
-    .mat-primary-button {
-        color: mat-color($app-primary)
+    mat-sidenav, .noteContainer .note:hover {
+        background-color: rgba(245, 245, 245) !important;
+    }
+    .stack, .note {
+        background-color: #FFF !important;
     }
 }
 
 @media (prefers-color-scheme: dark) {
     @include angular-material-theme($app-dark-theme);
-    html, body {
-      background-color: rgb(25, 25, 25);
+    html, body, mat-sidenav-container {
+      background-color: #121212 !important;
       color: #FFF;
-    }
-    .activeLink {
-        color: mat-color($app-accent, lighter) !important
-    }
-    .archived {
-        background-color: rgba(255, 255, 255, 0.05) !important;
-    }
-    .warn {
-        color: mat-color($app-warn)
     }
     mat-expansion-panel, mat-expansion-panel-header, mat-expansion-panel-body {
         background-color: rgba(40, 40, 40) !important;
     }
-    .active {
-        color: mat-color($app-accent, lighter) !important;
-        background-color: mat-color($app-accent, default, 0.1) !important;
-    }
     .archived {
+        background-color: rgba(0, 0, 0, 0.1) !important;
+    }
+    .active {
         background-color: rgba(255, 255, 255, 0.05) !important;
     }
-    mat-sidenav-container, mat-sidenav {
-        background-color: rgb(25, 25, 25) !important;
+    .activeLink {
+        background-color: rgba(255, 255, 255, 0.1) !important;
     }
-    .mat-primary-button { // This is needed for dark mode (mat-indigo is too dark otherwise)
-        color: mat-color($app-primary, lighter)
+    mat-sidenav, .noteContainer .note:hover {
+        background-color: #2D2D2D !important;
+    }
+    .stack, .note {
+        background-color: #1E1E1E !important;
     }
 }
-
-/* You can add global styles to this file, and also import other style files */
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
@@ -78,12 +68,20 @@ mat-sidenav-container {
     height: 100%;
 }
   
+.noteContainer {
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 2px;
+    padding: 1em;
+    border-color: gray;
+}
+
 mat-sidenav {
     width: 15em;
 }
 
 .stdMargin {
-    margin: 1em;
+    margin: 1em !important;
 }
 
 .stdMarginHorizontal {
@@ -124,14 +122,6 @@ mat-sidenav {
     transition: transform 300ms cubic-bezier(0, 0, 0.2, 1);
 }
 
-.stack {
-    border-style: solid;
-    border-width: 1px;
-    border-radius: 2px;
-    padding: 1em;
-    border-color: gray;
-}
-
 .hide {
     display: none !important;
 }
@@ -151,17 +141,6 @@ mat-sidenav-container {
 
 a {
     color: inherit;
-}
-
-.noteContainer {
-    .note:hover {
-        background-color: rgba($color: mat-color($app-accent), $alpha: 0.1)
-    }
-    border-style: solid;
-    border-width: 1px;
-    border-radius: 2px;
-    border-color: gray;
-    padding: 1em;
 }
 
 .note {

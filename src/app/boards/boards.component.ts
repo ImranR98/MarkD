@@ -90,9 +90,11 @@ export class BoardsComponent implements OnInit {
   }
 
   deleteBoard(boardIndex: number) {
-    this.boards.splice(boardIndex, 1)
-    this.activeBoardIndex = null
-    this.somethingChanged()
+    if (confirm('Delete this Board?')) {
+      this.boards.splice(boardIndex, 1)
+      this.activeBoardIndex = null
+      this.somethingChanged()
+    }
   }
 
 }

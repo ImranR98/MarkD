@@ -23,13 +23,14 @@
                             </button>
                         </div>
                     </div>
-                    <div mat-list-item fxLayout="column">
-                        <button mat-button color="primary-button" aria-label="Add Board" (click)="addBoard()">
-                            + Board
+                    <div mat-list-item fxLayout="row" fxLayoutAlign="center">
+                        <button mat-button aria-label="Add Board" (click)="addBoard()" class="stdMargin">
+                            Add Board
                         </button>
                     </div>
                 </div>
-                <mat-checkbox #showArchivedBoards class="stdMargin">Show Archived Boards</mat-checkbox>
+                <mat-checkbox #showArchivedBoards class="stdMargin">Show Archived Boards
+                </mat-checkbox>
             </mat-list>
         </mat-sidenav>
         <mat-sidenav-content>
@@ -39,15 +40,20 @@
             </app-board>
             <div fxLayout="row" fxLayoutAlign="end center" class="stdMargin"
                 *ngIf="activeBoardIndex == null || boards.length == 0" fxLayoutGap="1em">
-                <strong *ngIf="!loading && boards.length == 0">Start by adding a board here</strong>
+                <strong *ngIf="!loading && boards.length == 0">Start by adding a board
+                    here</strong>
+                <strong
+                    *ngIf="!loading && activeBoardIndex == null && boards.length > 0 && !showArchivedBoards.checked">Existing
+                    archived boards:
+                    {{boards.length}}</strong>
                 <button mat-icon-button (click)="sidenav.toggle()" class="forceHideOverflow"
                     aria-label="Toggle Board View" matTooltip="Toggle Board View" [matTooltipShowDelay]="1500">
                     <mat-icon>menu_open</mat-icon>
                 </button>
             </div>
             <div fxLayout="column" class="bottomFixed">
-                <mat-progress-bar *ngIf="moreChanges" mode="indeterminate" color="accent"> </mat-progress-bar>
-                <mat-progress-bar *ngIf="loading || saving" mode="indeterminate" color="primary"> </mat-progress-bar>
+                <mat-progress-bar *ngIf="loading || saving || moreChanges" mode="indeterminate" color="primary">
+                </mat-progress-bar>
             </div>
         </mat-sidenav-content>
     </mat-sidenav-container>

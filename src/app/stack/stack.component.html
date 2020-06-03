@@ -1,4 +1,4 @@
-<div fxLayout="column" fxLayoutGap="1em" cdkDropList [cdkDropListData]="stack.items" (cdkDropListDropped)="drop($event)"
+<mat-card fxLayout="column" cdkDropList [cdkDropListData]="stack.items" (cdkDropListDropped)="drop($event)"
     class="stdMarginBottom stack" [class.hide]="stack.archived && !showArchived" [class.archived]="stack.archived">
     <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="1em">
         <div fxFlex="100%">
@@ -12,7 +12,7 @@
                             fxHide.lt-sm>left</span><span fxHide fxShow.lt-sm>up</span></button>
                     <button mat-menu-item *ngIf="canMoveDown" (click)="moveDown()">Move
                         <span fxShow fxHide.lt-sm>right</span><span fxHide fxShow.lt-sm>down</span></button>
-                    <button mat-menu-item class="warn" (click)="deleteThis()">Delete
+                    <button mat-menu-item (click)="deleteThis()">Delete
                         Stack</button>
                 </mat-menu>
                 <button mat-icon-button (click)="archiveThis()" class="forceHideOverflow"
@@ -31,7 +31,7 @@
     <div fxLayout="column">
         <div *ngFor="let item of stack.items; let itemIndex = index;" cdkDrag [class.archived]="item.archived">
             <div fxLayout="column" fxLayoutGap="1em" *ngIf="!item.archived || showArchived" class="stdMarginBottom">
-                <mat-divider></mat-divider>
+                <mat-divider [inset]="true"></mat-divider>
                 <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="1em">
                     <app-item [item]="item" (change)="somethingChanged($event)" (delete)="deleteItem(itemIndex)"
                         fxFlex="100%"></app-item>
@@ -43,11 +43,13 @@
             </div>
         </div>
     </div>
-    <mat-divider></mat-divider>
-    <div fxLayout="row" fxLayoutAlign="space-between center">
-        <small>{{stack.archived ? 'Archived' : ''}}</small>
-        <button mat-button color="primary-button" aria-label="Add Item" (click)="addItem()">
-            + Item
-        </button>
+    <div fxLayout="column" fxLayoutGap="1em">
+        <mat-divider [inset]="true"></mat-divider>
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+            <small>{{stack.archived ? 'Archived' : ''}}</small>
+            <button mat-icon-button aria-label="Add Item" matTooltip="Add Item" [matTooltipShowDelay]="1500" (click)="addItem()" class="forceHideOverflow">
+                <mat-icon>add</mat-icon>
+            </button>
+        </div>
     </div>
-</div>
+</mat-card>

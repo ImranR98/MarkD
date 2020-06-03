@@ -1,4 +1,4 @@
-import { Component, Input, Output } from '@angular/core'
+import { Component, Input, Output, OnInit } from '@angular/core'
 import { EventEmitter } from '@angular/core'
 
 @Component({
@@ -6,9 +6,15 @@ import { EventEmitter } from '@angular/core'
   templateUrl: './editor.component.html',
   styleUrls: ['./editor.component.scss']
 })
-export class EditorComponent {
+export class EditorComponent implements OnInit {
   @Input() data: string
   @Output() change: EventEmitter<string> = new EventEmitter<string>()
+
+  startedEmpty: boolean = false
+
+  ngOnInit() {
+    this.startedEmpty = !this.data
+  }
 
   changed() {
     this.change.emit(this.data)

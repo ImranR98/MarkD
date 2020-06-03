@@ -1,12 +1,11 @@
 <div *ngIf="categories; else loading" fxLayout="column" class="stdMargin">
     <div fxLayout="row" fxLayoutAlign="space-between start" fxFlex="100%">
         <h1>Categories</h1>
-        <button mat-button class="forceHideOverflow" (click)="addCategory()" aria-label="Add Category"
-            color="primary-button">
-            + Add Category
+        <button mat-button (click)="addCategory()" aria-label="Add Category">
+            Add Category
         </button>
     </div>
-    <mat-grid-list #grid role="list" cols="1" rowHeight="10em" gutterSize="1em" [class.hide]="!categories">
+    <mat-grid-list #grid role="list" cols="1" gutterSize="1em" rowHeight="10em" [class.hide]="!categories">
         <mat-grid-tile matRipple role="listitem" *ngFor="let category of categories" fxLayout="column"
             class="noteContainer">
             <div [routerLink]="['/notes/category', category.category]" fxLayout="column" fxLayoutAlign="space-between"

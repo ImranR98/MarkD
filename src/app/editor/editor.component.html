@@ -1,17 +1,18 @@
 <div fxLayout="row" fxLayout.lt-sm="column" class="stdMarginHorizontal" fxLayoutGap="1em" fxShow fxHide.lt-sm>
     <div fxLayout="column" fxFlex="50%">
         <mat-form-field>
-            <textarea matInput placeholder="Note" [(ngModel)]="data" rows="10" (ngModelChange)="changed()"></textarea>
+            <textarea matInput placeholder="Note" [(ngModel)]="data" rows="20" (ngModelChange)="changed()"></textarea>
         </mat-form-field>
     </div>
     <mat-divider [vertical]="true"></mat-divider>
     <app-markdown [data]="data" fxFlex="50%"></app-markdown>
 </div>
-<mat-tab-group fxHide fxShow.lt-sm>
+
+<mat-tab-group fxHide fxShow.lt-sm *ngIf="startedEmpty">
     <mat-tab label="Editor">
         <div fxLayout="column" class="stdMargin">
             <mat-form-field>
-                <textarea matInput placeholder="Note" [(ngModel)]="data" rows="10"
+                <textarea matInput placeholder="Note" [(ngModel)]="data" rows="20"
                     (ngModelChange)="changed()"></textarea>
             </mat-form-field>
         </div>
@@ -19,6 +20,22 @@
     <mat-tab label="Preview">
         <div class="stdMargin">
             <app-markdown [data]="data"></app-markdown>
+        </div>
+    </mat-tab>
+</mat-tab-group>
+
+<mat-tab-group fxHide fxShow.lt-sm *ngIf="!startedEmpty">
+    <mat-tab label="Preview">
+        <div class="stdMargin">
+            <app-markdown [data]="data"></app-markdown>
+        </div>
+    </mat-tab>
+    <mat-tab label="Editor">
+        <div fxLayout="column" class="stdMargin">
+            <mat-form-field>
+                <textarea matInput placeholder="Note" [(ngModel)]="data" rows="20"
+                    (ngModelChange)="changed()"></textarea>
+            </mat-form-field>
         </div>
     </mat-tab>
 </mat-tab-group>

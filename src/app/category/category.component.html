@@ -1,9 +1,8 @@
 <div class="stdMargin" *ngIf="category$.value">
     <div fxLayout="row" fxLayoutGap="1em" fxLayoutAlign="space-between start">
         <h1>{{category$.value.category ? category$.value.category : 'Uncategorized'}}</h1>
-        <button mat-icon-button class="forceHideOverflow" routerLink="/notes/note/{{category$.value.category}}"
-            aria-label="Add Note" color="primary-button" matTooltip="Add Note" [matTooltipShowDelay]="1500">
-            <mat-icon>add</mat-icon>
+        <button mat-button routerLink="/notes/note/{{category$.value.category}}" aria-label="Add Note">
+            Add Note
         </button>
     </div>
     <div fxLayout="row" fxLayout.lt-sm="column-reverse" fxLayoutAlign="space-between" fxLayoutGap="1em"
@@ -24,7 +23,8 @@
         </div>
     </div>
     <div fxLayout="column" fxLayoutGap="1em">
-        <mat-grid-list #grid role="list" cols="1" rowHeight="13em" gutterSize="1em" [class.hide]="displayedCategories.length == 0">
+        <mat-grid-list #grid role="list" cols="1" rowHeight="13em" gutterSize="1em"
+            [class.hide]="displayedCategories.length == 0">
             <mat-grid-tile matRipple role="listitem" *ngFor="let note of displayedCategories" fxLayout="column"
                 class="noteContainer">
                 <mat-menu #noteMenu="matMenu">
@@ -33,7 +33,8 @@
                             (click)="moveNote(category$.value.category, category.category, note.fileName)">{{category.category ? category.category : 'Uncategorized'}}</button>
                     </div>
                 </mat-menu>
-                <div [routerLink]="['/notes/note', category$.value.category ? category$.value.category : '/', note.fileName]"
+                <mat-card
+                    [routerLink]="['/notes/note', category$.value.category ? category$.value.category : '/', note.fileName]"
                     fxLayout="column" fxLayoutAlign="space-between" fxLayoutGap="1em" class="note">
                     <div fxLayout="column">
                         <span class="stdMarginBottom" class="textOverflow">{{note.fileName}}</span>
@@ -54,14 +55,14 @@
                                 matTooltip="Rename" [matTooltipShowDelay]="1500">
                                 <mat-icon>edit</mat-icon>
                             </button>
-                            <button mat-icon-button class="forceHideOverflow" color="primary-button"
-                                [matMenuTriggerFor]="noteMenu" (click)="$event.stopPropagation()" aria-label="Move"
-                                matTooltip="Move" [matTooltipShowDelay]="1500">
+                            <button mat-icon-button class="forceHideOverflow" [matMenuTriggerFor]="noteMenu"
+                                (click)="$event.stopPropagation()" aria-label="Move" matTooltip="Move"
+                                [matTooltipShowDelay]="1500">
                                 <mat-icon>swap_vert</mat-icon>
                             </button>
                         </div>
                     </div>
-                </div>
+                </mat-card>
             </mat-grid-tile>
         </mat-grid-list>
     </div>

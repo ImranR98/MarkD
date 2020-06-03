@@ -33,8 +33,10 @@ export class BoardComponent implements OnInit {
   }
 
   deleteStack(stackIndex: number) {
-    this.board.stacks.splice(stackIndex, 1)
-    this.somethingChanged()
+    if (confirm('Delete this Stack?')) {
+      this.board.stacks.splice(stackIndex, 1)
+      this.somethingChanged()
+    }
   }
 
   addStack() {

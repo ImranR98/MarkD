@@ -6,7 +6,7 @@
                     placeholder="Board Title" type="text" class="hideInput bold large">
             </mat-form-field>
             <mat-menu #boardOptions="matMenu">
-                <button mat-menu-item class="warn" (click)="deleteThis()">Delete Board</button>
+                <button mat-menu-item (click)="deleteThis()">Delete Board</button>
                 <button mat-menu-item (click)="archiveThis()">{{board.archived ? 'Unarchive' : 'Archive'}}
                     Board</button>
             </mat-menu>
@@ -30,7 +30,7 @@
 </div>
 <div fxLayout="row" fxLayoutAlign="space-between center" class="stdMargin">
     <mat-checkbox #showArchived class="stdMargin">Show Archived</mat-checkbox>
-    <button mat-button color="primary-button" aria-label="Add Stack" (click)="addStack()">
-        + Stack
+    <button mat-button aria-label="Add Stack" (click)="addStack()">
+        Add Stack
     </button>
 </div>

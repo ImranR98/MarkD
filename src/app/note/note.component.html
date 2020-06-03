@@ -1,4 +1,4 @@
-<div *ngIf="activeNote; else loading" fxLayout="column" fxLayoutAlign="space-between" class="height100">
+<div *ngIf="activeNote; else loading" fxLayout="column" class="height100">
     <div>
         <div class="stdMarginTop stdMarginHorizontal">
             <mat-form-field *ngIf="new">
@@ -10,8 +10,13 @@
     </div>
     <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="1em"
         class="stdMarginHorizontal forceStdPaddingVertical">
-        <button mat-button color="warn" (click)="delete()" [disabled]="new">Delete</button>
-        <button mat-button color="primary-button" (click)="save()">Save</button>
+        <button mat-mini-fab color="warn" aria-label="Delete Note" 
+            (click)="delete()" [disabled]="new" matTooltip="Delete Note" [matTooltipShowDelay]="1500">
+            <mat-icon>delete_outline</mat-icon>
+        </button>
+        <button mat-mini-fab color="primary" aria-label="Save Note" matTooltip="Save Note" [matTooltipShowDelay]="1500" (click)="save()">
+            <mat-icon>save</mat-icon>
+        </button>
     </div>
 </div>
 

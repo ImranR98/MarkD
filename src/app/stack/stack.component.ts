@@ -61,8 +61,10 @@ export class StackComponent implements OnInit {
   }
 
   deleteItem(itemIndex: number) {
-    this.stack.items.splice(itemIndex, 1)
-    this.somethingChanged()
+    if (confirm('Delete this Item?')) {
+      this.stack.items.splice(itemIndex, 1)
+      this.somethingChanged()
+    }
   }
 
   addItem() {
