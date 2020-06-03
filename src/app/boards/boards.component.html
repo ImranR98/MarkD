@@ -36,20 +36,11 @@
         <mat-sidenav-content>
             <app-board *ngFor="let board of boards; let boardIndex = index;"
                 [class.hide]="boardIndex != activeBoardIndex" [board]="board" (change)="somethingChanged($event)"
-                (delete)="deleteBoard(boardIndex)" (toggleBoards)="sidenav.toggle()">
+                (delete)="deleteBoard(boardIndex)">
             </app-board>
             <div fxLayout="row" fxLayoutAlign="end center" class="stdMargin"
                 *ngIf="activeBoardIndex == null || boards.length == 0" fxLayoutGap="1em">
-                <strong *ngIf="!loading && boards.length == 0">Start by adding a board
-                    here</strong>
-                <strong
-                    *ngIf="!loading && activeBoardIndex == null && boards.length > 0 && !showArchivedBoards.checked">Existing
-                    archived boards:
-                    {{boards.length}}</strong>
-                <button mat-icon-button (click)="sidenav.toggle()" class="forceHideOverflow"
-                    aria-label="Toggle Board View" matTooltip="Toggle Board View" [matTooltipShowDelay]="1500">
-                    <mat-icon>menu_open</mat-icon>
-                </button>
+                <strong *ngIf="!loading">The Deck icon above toggles the Boards panel</strong>
             </div>
             <div fxLayout="column" class="bottomFixed">
                 <mat-progress-bar *ngIf="loading || saving || moreChanges" mode="indeterminate" color="primary">

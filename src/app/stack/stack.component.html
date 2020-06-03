@@ -47,8 +47,8 @@
         <mat-divider [inset]="true"></mat-divider>
         <div fxLayout="row" fxLayoutAlign="space-between center">
             <small>{{stack.archived ? 'Archived' : ''}}</small>
-            <button mat-icon-button aria-label="Add Item" matTooltip="Add Item" [matTooltipShowDelay]="1500" (click)="addItem()" class="forceHideOverflow">
-                <mat-icon>add</mat-icon>
+            <button mat-button aria-label="Add Item" (click)="addItem()" class="forceHideOverflow">
+                Add Item
             </button>
         </div>
     </div>

@@ -18,20 +18,17 @@ $app-dark-theme: mat-dark-theme($app-primary, $app-accent, $app-warn);
     mat-expansion-panel, mat-expansion-panel-header, mat-expansion-panel-body {
         background-color: rgba(255, 255, 255) !important;
     }
-    .archived {
-        background-color: rgba(255, 255, 255, 0.1) !important;
+    .stack, .note {
+        background-color: #FFF !important;
     }
-    .active {
+    .active, .archived {
         background-color: rgba(0, 0, 0, 0.05) !important;
     }
     .activeLink {
-        background-color: rgba(255, 255, 255, 0.1) !important;
+        color: mat-color($app-accent) !important;
     }
     mat-sidenav, .noteContainer .note:hover {
         background-color: rgba(245, 245, 245) !important;
-    }
-    .stack, .note {
-        background-color: #FFF !important;
     }
 }
 
@@ -44,11 +41,11 @@ $app-dark-theme: mat-dark-theme($app-primary, $app-accent, $app-warn);
     mat-expansion-panel, mat-expansion-panel-header, mat-expansion-panel-body {
         background-color: rgba(40, 40, 40) !important;
     }
-    .archived {
-        background-color: rgba(0, 0, 0, 0.1) !important;
+    .stack, .note {
+        background-color: #1E1E1E !important;
     }
-    .active {
-        background-color: rgba(255, 255, 255, 0.05) !important;
+    .active, .archived {
+        background-color: rgba(255, 255, 255, 0.1) !important;
     }
     .activeLink {
         background-color: rgba(255, 255, 255, 0.1) !important;
@@ -56,13 +53,15 @@ $app-dark-theme: mat-dark-theme($app-primary, $app-accent, $app-warn);
     mat-sidenav, .noteContainer .note:hover {
         background-color: #2D2D2D !important;
     }
-    .stack, .note {
-        background-color: #1E1E1E !important;
-    }
 }
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+code {
+    display: block;
+    white-space: pre-wrap
+}
 
 mat-sidenav-container {
     height: 100%;

@@ -47,7 +47,9 @@ export class NoteComponent implements OnInit, OnDestroy {
   }
 
   changed(e) {
-    this.activeNote.data = e.target.value
+    if (typeof e == 'string') {
+      this.activeNote.data = e
+    }
   }
 
   save() {

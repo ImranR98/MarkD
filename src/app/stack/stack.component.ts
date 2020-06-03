@@ -28,18 +28,14 @@ export class StackComponent implements OnInit {
   }
 
   drop(event: CdkDragDrop<string[]>) {
-    console.log('Dropped')
     if (event.previousContainer === event.container) {
-      console.log('Moving within Array')
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex)
     } else {
-      console.log('Moving between Arrays')
       transferArrayItem(event.previousContainer.data,
         event.container.data,
         event.previousIndex,
         event.currentIndex)
     }
-    console.log(event.previousIndex, event.currentIndex)
     this.somethingChanged()
   }
 

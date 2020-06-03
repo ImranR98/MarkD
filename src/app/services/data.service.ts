@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core'
+import { Injectable, EventEmitter } from '@angular/core'
 import { HttpClient, HttpHeaders } from '@angular/common/http'
 import { environment } from 'src/environments/environment'
 import { Board, Note, CategoryInfo } from '../types'
@@ -9,9 +9,15 @@ import { Board, Note, CategoryInfo } from '../types'
 export class DataService {
   constructor(private http: HttpClient) { }
 
+  toggleDeckNav: EventEmitter<null> = new EventEmitter<null>()
+
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
     withCredentials: true // Make sure JWT header is sent
+  }
+
+  toggleDeckNavEvent() {
+    this.toggleDeckNav.emit(null)
   }
 
   findMaxDaysBetweenDates(date1: Date, date2: Date): number {

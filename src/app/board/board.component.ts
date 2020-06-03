@@ -12,7 +12,6 @@ export class BoardComponent implements OnInit {
   @Input() board: Board
   @Output() change: EventEmitter<Event> = new EventEmitter()
   @Output() delete: EventEmitter<string> = new EventEmitter()
-  @Output() toggleBoards: EventEmitter<string> = new EventEmitter()
 
   constructor() { }
 
@@ -52,9 +51,5 @@ export class BoardComponent implements OnInit {
   moveStackDown(stackIndex: number) {
     moveItemInArray(this.board.stacks, stackIndex, stackIndex + 1)
     this.somethingChanged()
-  }
-
-  toggleBoardsFn() {
-    this.toggleBoards.emit('toggle')
   }
 }

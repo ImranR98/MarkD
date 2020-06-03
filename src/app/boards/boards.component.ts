@@ -1,18 +1,21 @@
-import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core'
+import { Component, OnInit, ChangeDetectorRef, ViewChild, OnDestroy } from '@angular/core'
 import { MediaMatcher } from '@angular/cdk/layout'
 import { Board } from '../types'
 import { MatSidenav } from '@angular/material/sidenav'
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop'
 import { DataService } from '../services/data.service'
 import { ErrorService } from '../services/error.service'
+import { Subscription } from 'rxjs'
 
 @Component({
   selector: 'app-boards',
   templateUrl: './boards.component.html',
   styleUrls: ['./boards.component.scss']
 })
-export class BoardsComponent implements OnInit {
+export class BoardsComponent implements OnInit, OnDestroy {
   boards: Board[] = []
+
+  subs: Subscription[] = []
 
   activeBoardIndex: number = null
   mobileQuery: MediaQueryList
@@ -38,7 +41,7 @@ export class BoardsComponent implements OnInit {
       this.loading = false
       this.boards = boards
       if (this.boards.length > 0) this.activeBoardIndex = 0
-      if (!this.mobileQuery.matches) setTimeout(() => { this.sidenav.open() })
+      setTimeout(() => { this.sidenav.open() })
     }).catch(err => {
       this.loading = false
       this.errorService.showError(err, () => this.getBoards())
@@ -47,6 +50,9 @@ export class BoardsComponent implements OnInit {
 
   ngOnInit(): void {
     this.dataService.setLastVisitedPage('deck')
+    this.subs.push(this.dataService.toggleDeckNav.subscribe(() => {
+      this.sidenav.toggle()
+    }))
     this.getBoards()
   }
 
@@ -60,7 +66,6 @@ export class BoardsComponent implements OnInit {
         this.moreChanges = false
       }).catch(err => {
         this.saving = false
-        console.log(err)
         this.errorService.showError(err, () => this.somethingChanged(e))
       })
     }, 1000)
@@ -95,6 +100,10 @@ export class BoardsComponent implements OnInit {
       this.activeBoardIndex = null
       this.somethingChanged()
     }
+  }
+
+  ngOnDestroy() {
+    this.subs.forEach(sub => sub.unsubscribe())
   }
 
 }

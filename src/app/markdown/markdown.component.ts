@@ -17,7 +17,7 @@ export class MarkdownComponent {
 
   @Input() data: string
   html: SafeHtml
-  md: any
+  md: any = marked
 
   static highlightCode(code: string, language: string): string {
     if (!(language && highlightjs.getLanguage(language))) {

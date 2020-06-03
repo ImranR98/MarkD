@@ -44,6 +44,7 @@ import { MatNativeDateModule } from '@angular/material/core'
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment'
+import { A11yModule } from '@angular/cdk/a11y'
 
 @NgModule({
   declarations: [
@@ -92,6 +93,7 @@ import { environment } from '../environments/environment'
     MatSidenavModule,
     MatCardModule,
     DragDropModule,
+    A11yModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [{
