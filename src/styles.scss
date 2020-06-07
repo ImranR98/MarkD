@@ -48,7 +48,7 @@ $app-dark-theme: mat-dark-theme($app-primary, $app-accent, $app-warn);
         background-color: rgba(255, 255, 255, 0.1) !important;
     }
     .activeLink {
-        background-color: rgba(255, 255, 255, 0.1) !important;
+        color: mat-color($app-accent) !important;
     }
     mat-sidenav, .noteContainer .note:hover {
         background-color: #2D2D2D !important;
