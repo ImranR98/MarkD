@@ -2,7 +2,7 @@
 
 import { Component, Input, SimpleChange } from '@angular/core'
 import marked, { Renderer } from 'marked'
-import highlightjs from 'highlight.js'
+import * as highlightjs from 'highlight.js'
 import DOMPurify from 'dompurify'
 import {
   DomSanitizer, SafeHtml
