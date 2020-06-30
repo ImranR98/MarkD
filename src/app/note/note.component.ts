@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core'
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
 import { Subscription, BehaviorSubject } from 'rxjs'
 import { Note } from '../types'
@@ -79,5 +79,4 @@ export class NoteComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subs.forEach(sub => sub.unsubscribe())
   }
-
 }

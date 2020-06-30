@@ -1,23 +1,23 @@
 <div *ngIf="activeNote; else loading" fxLayout="column" class="height100">
-    <div>
-        <div class="stdMarginTop stdMarginHorizontal">
-            <mat-form-field *ngIf="new">
+    <div class="stdMarginTop stdMarginHorizontal">
+        <div fxLayout="row" fxLayoutGap="1em" fxLayoutAlign="space-between center">
+            <mat-form-field *ngIf="new" fxFlex="100%">
                 <input matInput placeholder="File Name" [(ngModel)]="activeNote.fileName">
             </mat-form-field>
-            <p *ngIf="!new"><strong>{{activeNote.fileName}}</strong></p>
+            <span *ngIf="!new"><strong>{{activeNote.fileName}}</strong></span>
+            <div fxLayout="row" fxLayoutGap="1em">
+                <button mat-icon-button color="warn" aria-label="Delete Note" (click)="delete()" [disabled]="new"
+                    matTooltip="Delete Note" [matTooltipShowDelay]="1500">
+                    <mat-icon>delete_outline</mat-icon>
+                </button>
+                <button mat-icon-button color="primary" aria-label="Save Note" (click)="save()" matTooltip="Save Note"
+                    [matTooltipShowDelay]="1500">
+                    <mat-icon>save</mat-icon>
+                </button>
+            </div>
         </div>
-        <app-editor [data]="activeNote.data" (change)="changed($event)"></app-editor>
     </div>
-    <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="1em"
-        class="stdMarginHorizontal forceStdPaddingVertical">
-        <button mat-mini-fab color="warn" aria-label="Delete Note" 
-            (click)="delete()" [disabled]="new" matTooltip="Delete Note" [matTooltipShowDelay]="1500">
-            <mat-icon>delete_outline</mat-icon>
-        </button>
-        <button mat-mini-fab color="primary" aria-label="Save Note" matTooltip="Save Note" [matTooltipShowDelay]="1500" (click)="save()">
-            <mat-icon>save</mat-icon>
-        </button>
-    </div>
+    <app-editor [data]="activeNote.data" (change)="changed($event)"></app-editor>
 </div>
 
 <ng-template #loading>
