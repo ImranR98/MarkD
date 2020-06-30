@@ -53,4 +53,14 @@ export class ItemComponent implements OnInit {
     return this.dataService.formatDate(date, true, false)
   }
 
+  getDateClass(date: Date) {
+    return this.dataService.getDateClass(date)
+  }
+
+  getTruncatedDescription(length: number = 25) {
+    if (this.item.description) {
+      return this.item.description.slice(0, length) + (this.item.description.length > length ? '...' : '')
+    }
+  }
+
 }

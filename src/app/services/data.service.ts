@@ -55,6 +55,14 @@ export class DataService {
     return date.toDateString() + ', ' + (date.getHours() > 12 || date.getHours() == 0 ? date.getHours() == 0 ? 12 : date.getHours() - 12 : date.getHours()) + (date.getMinutes() == 0 ? '' : date.getMinutes() <= 9 ? ':0' + date.getMinutes() : ':' + date.getMinutes()) + ' ' + (date.getHours() >= 12 ? 'PM' : 'AM')
   }
 
+  getDateClass(date: Date) {
+    let diff = this.findMaxDaysBetweenDates(new Date(), date)
+    if (diff > 0 && diff <= 7) return 'bold'
+    if (diff == 0) return 'orange bold'
+    if (diff < 0) return 'red bold'
+    return ''
+  }
+
   getBoards = async (): Promise<any> => {
     return await this.http.get(environment.apiUrl + '/boards', this.httpOptions).toPromise()
   }

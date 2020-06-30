@@ -4,7 +4,8 @@
             <input matInput (ngModelChange)="somethingChanged($event); updateItemDateModified();"
                 [(ngModel)]="item.title" placeholder="Item Title" type="text">
         </mat-form-field>
-        <small>{{item.archived ? 'Archived. ' : ''}}{{ item.due ? formatDate(item.due) + '.' : ''}}</small>
+        <small>{{getTruncatedDescription()}}</small>
+        <small>{{item.archived ? 'Archived. ' : ''}}<span [ngClass]="item.due && !item.archived ? getDateClass(item.due) : ''">{{ item.due ? formatDate(item.due) + '.' : ''}}</span></small>
     </div>
     <button mat-icon-button (click)="openItem()" class="forceHideOverflow" aria-label="Open Item" matTooltip="Open Item" [matTooltipShowDelay]="1500">
         <mat-icon>launch</mat-icon>
