@@ -1,6 +1,30 @@
 # MarkD
 MarkD is a self-hosted, single user, Kanban style planning board and Markdown Notes app.
 
+## Moving to Notion
+This project is no longer actively developed. Notion is a free product that can be used as a replacement.
+This function can convert the MarkD boards.json into CSV files that can be imported into Notion:
+
+```js
+const fs = require('fs')
+const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+let boards = JSON.parse(fs.readFileSync('./boards.json').toString())
+boards.forEach(board => {
+    const lines = ['Name,Assign,Comment,Status,When']
+    board.stacks.forEach(stack => {
+        stack.items.forEach(item => {
+            let d = item.due ? new Date(item.due) : null
+            lines.push(`"${item.title}","Imran Remtulla","${(item.description ? `${item.description.split('"').join('""')}` : '')}","${(item.archived ? 'Done' : stack.title == 'Blocked' ? 'Blocked' : '')}","${(d ? `${months[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}` : '')}"`)
+        })
+    })
+    CSV=''
+    lines.forEach(line => CSV += line + '\n')
+    fs.writeFileSync(`./${board.title}.csv`, CSV)
+});
+```
+
+Make sure that Notion board has 'Blocked' and 'Done' columns before merging the CSV.
+
 ### Configuration
 An RSA public/private key pair is needed for user sessions, along with a duration, in seconds, that each session lasts. These are needed as environment variables and can be defined in a .env file in the root directory.
 
